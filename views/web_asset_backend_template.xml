@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="hr_attendance assets" inherit_id="web.assets_backend">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/hr_attendance_newbiiz/static/src/js/employee_kanban_view_handler.js"></script>
+            <script type="text/javascript" src="/hr_attendance_newbiiz/static/src/js/kiosk_confirm.js"></script>
+        </xpath>
+    </template>
+</odoo>

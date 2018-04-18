@@ -18,9 +18,14 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/web_asset_backend_template.xml',
     ],
 
     'demo': [
         'demo/demo.xml',
+    ],
+
+    'qweb': [
+        "static/src/xml/attendance.xml",
     ],
 }
