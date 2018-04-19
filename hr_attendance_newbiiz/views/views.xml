@@ -9,13 +9,29 @@
         <field name="category_ids" position="after">
           <group>
             <field name="text_message"/>
-            <field name="photos" widget="many2many_tags"/>
           </group>
         </field>
 
         <field name="department_id" position="after">
           <field name="group"/>
         </field>
+
+        <xpath expr="//page[last()]" position="after">
+          <page string="Photos">
+            <field name="photos" mode="tree,kanban">
+              <form string="Photos">
+                <group>
+                  <field name="name"/>
+                  <field name="photo"/>
+                </group>
+              </form>
+              <tree string="Photos" editable="bottom">
+                <field name="name"/>
+                <field name="photo"/>
+              </tree>
+            </field>
+          </page>
+        </xpath>
       </field>
     </record>
 

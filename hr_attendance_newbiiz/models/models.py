@@ -20,14 +20,9 @@ class Avator(models.Model):
     _name = 'hr.avator'
     _description = "Avator"
 
-    name = fields.Char(compute='_compute_name')
+    name = fields.Char(required=True)
     photo = fields.Binary(attachment=True)
     employee = fields.Many2one(comodel_name='hr.employee')
-
-    @api.depends('employee')
-    def _compute_name(self):
-        for rec in self:
-            rec.name = rec.employee.name + ': ' + str(rec.id) if rec.employee and rec.id else 'None'
 
 
 class EmployeeGroup(models.Model):
