@@ -6,7 +6,7 @@
 
     'description': "",
 
-    'author': "newbiiz",
+    'author': "ERP Group, Newbiiz",
     'website': "http://www.newbiiz.com",
 
     'category': 'hr',
