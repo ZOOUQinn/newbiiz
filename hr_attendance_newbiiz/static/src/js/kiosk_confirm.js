@@ -67,6 +67,9 @@ var KioskConfirm = Widget.extend({
         this.employee_state = action.employee_state;
         this.employee_image = Session.url('/web/image', {model: 'hr.employee', id: action.employee_id, field: 'image_medium',});
         this.employee_text_message = action.employee_text_message;
+        this.employee_barcode = action.employee_barcode;
+        this.employee_department = action.employee_department;
+        this.employee_group = action.employee_group;
     },
 
     start: function () {

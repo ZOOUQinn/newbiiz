@@ -47,6 +47,9 @@
         </xpath>
 
         <field name="id" position="after">
+          <field name="barcode"/>
+          <field name="department_id"/>
+          <field name="group"/>
           <field name="text_message"/>
         </field>
       </field>

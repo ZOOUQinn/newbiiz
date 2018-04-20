@@ -15,6 +15,9 @@ KanbanRecord.include({
                 employee_name: this.record.name.raw_value,
                 employee_state: this.record.attendance_state.raw_value,
                 employee_text_message: this.record.text_message.raw_value,
+                employee_barcode: this.record.barcode.raw_value,
+                employee_department: this.record.department_id.value,
+                employee_group: this.record.group.value,
             };
 
             this.do_action(action);

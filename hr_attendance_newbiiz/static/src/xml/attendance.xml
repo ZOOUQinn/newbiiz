@@ -3,7 +3,8 @@
         <div class="o_hr_attendance_kiosk_mode_container o_app_switcher_background">
             <div class="o_hr_attendance_kiosk_mode">
                 <t t-if="widget.employee_id">
-                    <h1>Welcome <t t-esc="widget.employee_name"/></h1>
+                    <h1>Welcome <t t-esc="widget.employee_name"/>(<t t-esc="widget.employee_barcode"/>)</h1>
+                    <h1>Department <t t-esc="widget.employee_department"/> | Group <t t-esc="widget.employee_group"/></h1>
                     <img t-attf-src="{{widget.employee_image}}"/>
                     <h1><t t-esc="widget.employee_text_message"/></h1>
                     <t t-if="!widget.use_pin">
