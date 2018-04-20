@@ -6,23 +6,37 @@ class Employee(models.Model):
     _inherit = 'hr.employee'
 
     text_message = fields.Text(string='Text Message')
-    photos = fields.One2many(comodel_name='hr.avator',inverse_name='employee', string='Photos')
+    photos = fields.One2many(comodel_name='hr.employee.avator',inverse_name='employee', string='Photos')
     image = fields.Binary(readonly=True)
     group = fields.Many2one(comodel_name='hr.employee.group',string='Group')
 
     @api.constrains('photos')
-    def _onchange_photos(self):
+    def _constrains_photos(self):
         if self.photos:
-            self.image = self.photos[0].photo
+            for photo in self.photos:
+                if photo.used:
+                    self.image = photo.photo
 
 
 class Avator(models.Model):
-    _name = 'hr.avator'
+    _name = 'hr.employee.avator'
     _description = "Avator"
 
-    name = fields.Char(required=True)
+    name = fields.Char()
     photo = fields.Binary(attachment=True)
     employee = fields.Many2one(comodel_name='hr.employee')
+    used = fields.Boolean(string='Used?', default=True)
+
+    @api.constrains('photo')
+    def _constrains_photo(self):
+        if self.photo:
+            self.name = self.employee.name + '_' + str(self.id)
+
+    @api.constrains('used')
+    def _constrains_used(self):
+        if self.used:
+            for rec in self.env['hr.employee.avator'].search([('id','!=',self.id),('used','=',True)]):
+                rec.used = False
 
 
 class EmployeeGroup(models.Model):
