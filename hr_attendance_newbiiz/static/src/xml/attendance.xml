@@ -1,54 +1,9 @@
 <templates>
-    <t t-name="HrAttendanceNewbiizKioskConfirm">
-        <div class="o_hr_attendance_kiosk_mode_container o_app_switcher_background">
-            <div class="o_hr_attendance_kiosk_mode">
-                <t t-if="widget.employee_id">
-                    <h1>Welcome <t t-esc="widget.employee_name"/>(<t t-esc="widget.employee_barcode"/>)</h1>
-                    <h1>Department <t t-esc="widget.employee_department"/> | Group <t t-esc="widget.employee_group"/></h1>
-                    <img t-attf-src="{{widget.employee_image}}"/>
-                    <h1><t t-esc="widget.employee_text_message"/></h1>
-                    <t t-if="!widget.use_pin">
-                        <t t-if="widget.employee_state=='checked_in'">
-                            <h2>Check out</h2>
-                            <a class="fa btn-primary o_hr_attendance_sign_in_out_icon fa-sign-out fa-sign-in"/>
-                        </t>
-                        <t t-if="widget.employee_state=='checked_out'">
-                            <h2>Check in</h2>
-                            <a class="fa btn-primary o_hr_attendance_sign_in_out_icon fa-sign-out fa-sign-out"/>
-                        </t>
-                    </t>
-                    <t t-if="widget.use_pin">
-                        <t t-if="widget.employee_state=='checked_in'">
-                            <h2>Please enter your PIN to check out</h2>
-                        </t>
-                        <t t-if="widget.employee_state=='checked_out'">
-                            <h2>Please enter your PIN to check in</h2>
-                        </t>
-                        <div class="row">
-                            <div class="col-sm-8 col-sm-offset-2">
-                                <div class="row" >
-                                    <div class="col-xs-4 col-xs-offset-4"><input class="o_hr_attendance_PINbox" type="password" disabled="true"/></div>
-                                </div>
-                                <div class="row o_hr_attendance_pin_pad">
-                                    <t t-foreach="['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', 'ok']" t-as="btn_name">
-                                        <div class="col-xs-4 o_hr_attendance_pin_pad_border">
-                                            <a t-attf-class="btn btn-primary btn-block btn-lg o_hr_attendance_btn-round-corners {{ 'o_hr_attendance_pin_pad_button_' + btn_name }}"><t t-esc="btn_name"/></a>
-                                        </div>
-                                    </t>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
-                    </t>
-                </t>
-                <t t-if="!widget.employee_id">
-                    Error: could not find corresponding employee.<br/>Please return to the main menu.
-                </t>
-                <div class="oe_attendance_sign_in_out">
-                </div>
-                <div class="o_hr_attendance_back_button btn btn-danger fa fa-times"/>
-            </div>
-            <div class="o_hr_attendance_clock"></div>
-        </div>
+    <t t-extend="HrAttendanceKioskConfirm">
+      <t t-jquery="h1" t-operation="after">
+          <h1><t t-esc="widget.employee_barcode"/></h1>
+          <h1>Department: <t t-esc="widget.employee_department"/> | Group: <t t-esc="widget.employee_group"/></h1>
+          <img t-attf-src="{{widget.employee_image}}"/>
+      </t>
     </t>
 </templates>
