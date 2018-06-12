@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record model="ir.ui.view" id="product_newbiiz_template">
+    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <field name="model">product.template</field>
+    <field name="name">product_newbiiz.template.product.form</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]/group[@name='group_general']/field[@name='type']" position="before">
+          <field name="ma_labs_list_no" string="Ma Labs List #"/>
+          <field name="item_no" string="Item #"/>
+          <field name="mfr_part_no" string="Mfr Part #"/>
+          <field name="manufacturer" string="Manufacturer"/>
+          <field name="package" string="Package"/>
+          <field name="unit" string="Unit"/>
+        </xpath>
+        <xpath expr="//field[@name='barcode']" position="after">
+          <field name="description" string="Website Description"/>
+        </xpath>
+        <xpath expr="//field[@name='list_price']" position="before">
+          <field name="instant_rebate" string="Instant Rebate"/>
+          <field name="ir_start" string="Instant Rebate Start"/>
+          <field name="ir_end" string="Instant Rebate End"/>
+          <field name="currency_rate" string="Currency Rate"/>
+          <field name="currency_rate_date" string="Currency Rate Date"/>
+          <field name="usd_sales_price" string="USD - Sales Price"/>
+          <field name="usd_cost" string="USD - Cost"/>
+        </xpath>
+        <xpath expr="//field[@name='responsible_id']" position="after">
+          <field name="width" string="Width (cm)"/>
+          <field name="height" string="Height (cm)"/>
+          <field name="length" string="Length (cm)"/>
+        </xpath>
+      </data>
+    </field>
+  </record>
+</odoo>
