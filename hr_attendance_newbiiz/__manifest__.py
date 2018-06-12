@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hr_attendance_newbiiz",
+    'name': "HR Attendance Newbiiz",
 
     'summary': "",
 
     'description': "",
 
-    'author': "ERP Group, Newbiiz",
+    'author': "ZOOU Qinn <qinn.zou@newbiiz.com>",
     'website': "http://www.newbiiz.com",
 
     'category': 'hr',
