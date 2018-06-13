@@ -1,0 +1,5 @@
+recursive-include */data *
+recursive-include */views *
+recursive-include */security *
+recursive-include */static *
+recursive-include */demo *
