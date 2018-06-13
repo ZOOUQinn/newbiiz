@@ -10,6 +10,7 @@
     ],
     'data': [
         'views/product.xml',
+        'data/company.xml',
     ],
     'application': False,
     'license': 'OPL-1',
