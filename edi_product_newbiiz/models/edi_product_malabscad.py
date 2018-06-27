@@ -10,7 +10,7 @@ document format comprising a CSV file with a fixed list of columns:
 """
 import base64
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 
@@ -45,10 +45,10 @@ class EdiProductMalabsCADRecord(models.Model):
     manufacturer = fields.Char(string='Manufacturer')
     package = fields.Selection(string='Package', selection=PACKAGE)
     unit = fields.Char(string='Unit')
-    weight = fields.Float(string='Weight', default=0)
-    width = fields.Float(string='Width', default=0)
-    height = fields.Float(string='Height', default=0)
-    length = fields.Float(string='Length', default=0)
+    weight = fields.Float(string='Weight(lbs)', default=0)
+    width = fields.Float(string='Width(cm)', default=0)
+    height = fields.Float(string='Height(cm)', default=0)
+    length = fields.Float(string='Length(cm)', default=0)
     price = fields.Float(string='Sales Price', default=0)
     cost = fields.Float(string='Cost', default=0)
     instant_rebate = fields.Char(string='Instant Rebate')
@@ -117,8 +117,19 @@ class EdiProductMalabsCADDocument(models.AbstractModel):
             # d['package'] = d.get('Package', None)
             d['unit'] = d.get('Unit', None)
             d['instant_rebate'] = d.get('Instant Rebate', None)
-            d['ir_start'] = d.get('Instant Rebate Start', None)
-            d['ir_end'] = d.get('Instant Rebate End', None)
+
+            try:
+                fields.Datetime().from_string(d.get('Instant Rebate Start', None))
+                d['ir_start'] = d.get('Instant Rebate Start', None)
+            except ValueError:
+                d['ir_start'] = fields.Datetime().now()
+
+            try:
+                fields.Datetime().from_string(d.get('Instant Rebate End', None))
+                d['ir_end'] = d.get('Instant Rebate End', None)
+            except ValueError:
+                d['ir_end'] = fields.Datetime().to_string(fields.Datetime().from_string(d.get('ir_start', None)) + timedelta(days=30))
+
             d['length'] = d.get('Length', 0)
 
             for selection in PACKAGE:
