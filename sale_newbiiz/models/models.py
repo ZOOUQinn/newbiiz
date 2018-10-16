@@ -1,4 +1,16 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    @api.multi
+    def action_confirm(self):
+        if self.partner_invoice_id == self.partner_shipping_id:
+            return super(SaleOrder, self).action_confirm()
+        else:
+            raise UserError(_('The Invoice Address must be identical with Shipping Address.'))
 
 
 class SaleOrderLine(models.Model):
