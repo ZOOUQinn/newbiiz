@@ -5,12 +5,27 @@ from odoo.exceptions import UserError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    @api.model
+    def _credit_limit(self):
+        self.ensure_one()
+        credit_limit = self.partner_id.credit_limit
+        unpaid = 0.0
+        for invoice in self.env['account.invoice'].browse(self.env['account.invoice'].search((('state', '!=', 'paid'), ('partner_id', '=', self.partner_id.id),)).ids):
+            unpaid += invoice.residual_signed
+
+        if unpaid >= credit_limit:
+            return True
+        else:
+            return False
+
     @api.multi
     def action_confirm(self):
-        if self.partner_invoice_id == self.partner_shipping_id:
-            return super(SaleOrder, self).action_confirm()
-        else:
+        if self.partner_invoice_id != self.partner_shipping_id:
             raise UserError(_('The Invoice Address must be identical with Shipping Address.'))
+        elif self._credit_limit():
+            raise UserError(_('Unpaid invoice(s) total greater or equal to the credit line.'))
+        else:
+            return super(SaleOrder, self).action_confirm()
 
 
 class SaleOrderLine(models.Model):
