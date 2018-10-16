@@ -10,6 +10,7 @@
     ],
     'data': [
         'reports/report.xml',
+        'views/view.xml',
     ],
     'website': "http://www.newbiiz.com",
 }
