@@ -1,0 +1,4 @@
+<odoo>
+  <delete model="ir.ui.view" search="[('name', '=like', 'Odoo Studio%'),]"/>
+  <delete model="ir.model.fields" search="[('state', '=', 'manual')]"/>
+</odoo>

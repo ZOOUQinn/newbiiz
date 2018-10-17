@@ -9,6 +9,7 @@
         'product_newbiiz',
     ],
     'data': [
+        'data/global.xml',
         'reports/report.xml',
         'views/view.xml',
     ],
