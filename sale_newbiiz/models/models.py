@@ -27,6 +27,9 @@ class SaleOrder(models.Model):
         else:
             return super(SaleOrder, self).action_confirm()
 
+    resell_cert = fields.Char(string='Re-sell Certificate')
+    po = fields.Many2one(comodel_name='purchase.order', string='Purchase Order #')
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -47,3 +50,5 @@ class SaleOrderLine(models.Model):
         )
         if self.price_unit < self.env['account.tax']._fix_tax_included_price_company(self._get_display_price(product), product.taxes_id, self.tax_id, self.company_id):
             self.is_danger = True
+        else:
+            self.is_danger = False

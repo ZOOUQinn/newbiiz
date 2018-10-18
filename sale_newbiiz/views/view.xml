@@ -13,6 +13,13 @@
         <xpath expr="//tree" position="inside">
           <field name="is_danger" invisible="1"/>
         </xpath>
+
+        <field name="partner_shipping_id" position="after">
+          <field name="resell_cert"/>
+        </field>
+        <field name="payment_term_id" position="after">
+          <field name="po"/>
+        </field>
       </data>
     </field>
   </record>
