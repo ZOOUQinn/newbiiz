@@ -1,0 +1,264 @@
+<odoo>
+  <record id="newbiiz_view_users_form" model="ir.ui.view">
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//field[@name='partner_id']" position="after">
+          <field name="employee_name" string="Employee Name" />
+        </xpath>
+      </data>
+    </field>
+    <field name="inherit_id" ref="base.view_users_form" />
+    <field name="model">res.users</field>
+    <field name="name">newbiiz.view.users.form</field>
+    <field name="type">form</field>
+  </record>
+  <record id="newbiiz_product_template_only_form_view" model="ir.ui.view">
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]/group[@name='group_general']/field[@name='type']" position="before">
+          <field name="ma_labs_list" string="Ma Labs List #" />
+          <field name="item" string="Item #" />
+          <field name="mfr_part" string="Mfr Part #" />
+          <field name="descript" string="Descript" />
+          <field name="upc_code" string="UPC Code" />
+          <field name="manufacturer" string="Manufacturer" />
+          <field name="package" string="Package" />
+          <field name="unit" string="Unit" />
+        </xpath>
+        <xpath expr="//field[@name='barcode']" position="after">
+          <field name="website_description" string="Website Description" />
+        </xpath>
+        <xpath expr="//field[@name='list_price']" position="before">
+          <field name="instant_rebate" string="Instant Rebate" />
+          <field name="instant_rebate_start" string="Instant Rebate Start" />
+          <field name="instant_rebate_end" string="Instant Rebate End" />
+          <field name="currency_rate" string="Currency Rate" />
+          <field name="currency_rate_date" string="Currency Rate Date" />
+          <field name="usd_sales_price" string="USD - Sales Price" />
+          <field name="usd_cost" string="USD - Cost" />
+        </xpath>
+        <xpath expr="//field[@name='responsible_id']" position="after">
+          <field name="width_cm" string="Width (cm)" />
+          <field name="height_cm" string="Height (cm)" />
+          <field name="length_cm" string="Length (cm)" />
+        </xpath>
+      </data>
+    </field>
+    <field name="inherit_id" ref="product.product_template_only_form_view" />
+    <field name="model">product.template</field>
+    <field name="name">newbiiz.product.template.only.form.view</field>
+    <field name="type">form</field>
+  </record>
+  <record id="newbiiz_view_partner_form" model="ir.ui.view">
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='type']" position="before">
+          <field name="customer_id" string="Customer ID" />
+          <field name="vendor_number" string="Vendor Number" />
+          <field name="owner_name" string="Owner Name" />
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='function']" position="before">
+          <field name="job_position" string="Job Position" />
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='email']" position="after">
+          <field name="fax" string="Fax" />
+        </xpath>
+        <xpath expr="//field[@name='user_id']" position="after">
+          <field name="sales_note" string="Sales Note" />
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='purchase']/field[@name='supplier']" position="after">
+          <field name="supplier_currency" string="Supplier Currency" />
+        </xpath>
+        <xpath expr="//field[@name='property_stock_supplier']" position="attributes">
+          <attribute name="domain">[]</attribute>
+        </xpath>
+        <xpath expr="//field[@name='property_payment_term_id']" position="after">
+          <field name="rma_note" string="RMA Note" studio-view-group-ids="22" studio-view-group-names="Billing" />
+          <field name="credit_note" string="Credit Note" studio-view-group-ids="22" studio-view-group-names="Billing" />
+          <field name="acct_note" string="Acct Note" studio-view-group-ids="22" studio-view-group-names="Billing" />
+        </xpath>
+        <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
+          <field name="post_days" string="Post Days" studio-view-group-ids="22" studio-view-group-names="Billing" />
+          <field name="giacc" string="GIAcc" studio-view-group-ids="22" studio-view-group-names="Billing" />
+          <field name="limit" string="Limit" studio-view-group-ids="22" studio-view-group-names="Billing" />
+          <field name="tmdisday" string="TmdisDay" studio-view-group-ids="22" studio-view-group-names="Billing" />
+          <field name="tmnetday" string="TmnetDay" studio-view-group-ids="22" studio-view-group-names="Billing" />
+          <field name="tmdisrate" string="TmdisRate" studio-view-group-ids="22" studio-view-group-names="Billing" />
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+          <page name="studio_page_hLCtn" string="Vendor &amp; RMA">
+            <group name="studio_group_hLCtn">
+              <group name="studio_group_hLCtn_left">
+                <field name="copypkup" string="CopyPKup" />
+                <field name="copyinv" string="CopyInv" />
+                <field name="copywhs_v" string="CopyWhs - V" />
+                <field name="copywhs_r" string="CopyWhs - R" />
+                <field name="startdate" string="StartDate" />
+                <field name="vndtype" string="VndType" />
+                <field name="holdpay" string="HoldPay" />
+                <field name="daystoclr" string="Daystoclr" />
+                <field name="credline" string="Credline" />
+                <field name="rotation" string="Rotation" />
+                <field name="asigner" string="Asigner" />
+                <field name="other" string="Other" />
+                <field name="nondisagr" string="Nondisagr" />
+                <field name="ndaexpire" string="Ndaexpire" />
+                <field name="pay_type" string="Pay Type" />
+                <field name="pay_method" string="Pay Method" />
+                <field name="rem_email" string="Rem Email" />
+              </group>
+              <group name="studio_group_hLCtn_right">
+                <field name="rma_phone" string="RMA Phone" />
+                <field name="rma_fax" string="RMA Fax" />
+                <field name="rma_attn" string="RMA Attn" />
+                <field name="rma_email" string="RMA Email" />
+                <field name="caddr1" string="CAddr1" />
+                <field name="caddr2" string="CAddr2" />
+                <field name="ccity" string="CCity" />
+                <field name="cstate" string="CState" />
+                <field name="czip" string="CZip" />
+                <field name="rma1_addr1" string="RMA1 Addr1" />
+                <field name="rma1_addr2" string="RMA1 Addr2" />
+                <field name="rma1_city" string="RMA1 City" />
+                <field name="rma1_state" string="RMA1 State" />
+                <field name="rma1_zip" string="RMA1 ZIP" />
+                <field name="rma1_cont" string="RMA1 cont" />
+              </group>
+            </group>
+          </page>
+          <page name="studio_page_7TUU9" string="Customer">
+            <group name="studio_group_7TUU9">
+              <group name="studio_group_7TUU9_left" string="Credit Information">
+                <field name="credit_line" string="Credit Line" />
+                <field name="insurance" string="Insurance" />
+                <field name="d_b_no" string="D &amp; B No." />
+                <field name="d_b_rating" string="D &amp; B Rating" />
+                <field name="credit_reference_a" string="Credit Reference (a)" />
+                <field name="credit_reference_b" string="Credit Reference (b)" />
+                <field name="credit_reference_c" string="Credit Reference (c)" />
+                <field name="bank_info" string="Bank Info" />
+                <field name="re_sell_certificate" string="Re-sell Certificate" />
+              </group>
+              <group name="studio_group_7TUU9_right" string="Cargo Insurance">
+                <field name="si_min_max" string="SI MIN/MAX" />
+                <field name="si_expired" string="SI Expired" />
+                <field name="si_agent" string="SI AGENT" />
+                <field name="si_polcy" string="SI POLCY#" />
+                <field name="si_covrg" string="SI COVRG" />
+                <field name="si_dducb" string="SI DDUCB" />
+                <field name="si_exp_d" string="SI EXP. D" />
+              </group>
+            </group>
+            <group name="studio_group_PnaiT">
+              <group name="studio_group_PnaiT_left" string="Trade Reference">
+                <field name="company_name" string="Company Name" />
+                <field name="opend" string="Opend" />
+                <field name="term" string="Term" />
+                <field name="c_limit" string="C Limit" />
+                <field name="hicred" string="Hicred" />
+                <field name="remarks" string="Remarks" />
+              </group>
+              <group name="studio_group_PnaiT_right" string="Company Information">
+                <field name="president" string="President" />
+                <field name="ceo_cfo" string="CEO/CFO" />
+                <field name="authorized_purchaser" string="Authorized Purchaser" />
+                <field name="account_payable_contact_name" string="Account Payable Contact Name" />
+                <field name="this_company_is_a" string="This company is a " />
+                <field name="date_business_was_founded" string="Date business was founded" />
+                <field name="personal_guarantee" string="Personal Guarantee" />
+                <field name="ssn" string="SSN" />
+                <field name="credit_card" string="Credit Card" />
+              </group>
+            </group>
+          </page>
+          <page name="studio_page_R2H8c" string="Financial Statement">
+            <group name="studio_group_R2H8c">
+              <group name="studio_group_R2H8c_left">
+                <field name="period" string="Period" />
+                <field name="sales" string="$Sales" />
+                <field name="profit" string="Profit" />
+                <field name="p_margin" string="P_Margin" />
+                <field name="cash" string="Cash" />
+                <field name="c_ratio" string="C Ratio" />
+                <field name="li_nw" string="LI/NW" />
+                <field name="s_wc" string="S/WC" />
+                <field name="s_invent" string="S/INVENT" />
+                <field name="ar_s_365" string="AR/S*365" />
+                <field name="remark" string="REMARK" />
+              </group>
+              <group name="studio_group_R2H8c_right" />
+            </group>
+          </page>
+          <page name="studio_page_5RD9L" string="General Business Profile">
+            <group name="studio_group_5RD9L">
+              <group name="studio_group_5RD9L_left">
+                <field name="business_category" string="Business Category" />
+                <field name="employee_s_amount" string="Employee(s) amount" />
+                <field name="total_revenue_last_year" string="Total revenue last year" />
+                <field name="there_is_a_parent_company_yes" string="There is a parent company (yes)" />
+                <field name="parent_company_name" string="Parent Company - Name" />
+                <field name="parent_company_address" string="Parent Company - Address" />
+                <field name="parent_company_guarantee_debts_yes" string="Parent Company guarantee debts (yes)" />
+                <field name="number_of_branch_office_s" string="Number of branch office(s)" />
+                <field name="branch_office_address" string="Branch office address" />
+                <field name="how_did_you_find_out_about_ma_labs" string="How did you find out about Ma Labs" />
+              </group>
+              <group name="studio_group_5RD9L_right" />
+            </group>
+          </page>
+          <page name="studio_page_cZ878" string="Shipping">
+            <group name="studio_group_cZ878">
+              <group name="studio_group_cZ878_left">
+                <field name="ups_account" string="UPS Account #" />
+                <field name="fedex_account" string="FedEx Account #" />
+              </group>
+              <group name="studio_group_cZ878_right" />
+            </group>
+          </page>
+        </xpath>
+      </data>
+    </field>
+    <field name="inherit_id" ref="base.view_partner_form" />
+    <field name="model">res.partner</field>
+    <field name="name">newbiiz.view.partner.form</field>
+    <field name="type">form</field>
+  </record>
+  <record id="newbiiz_view_order_form" model="ir.ui.view">
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//field[@name='partner_shipping_id']" position="after">
+          <field name="re_sell_certificate" string="Re-sell Certificate" />
+        </xpath>
+        <xpath expr="//field[@name='payment_term_id']" position="attributes">
+          <attribute name="attrs">{}</attribute>
+          <attribute name="readonly">1</attribute>
+        </xpath>
+        <xpath expr="//field[@name='payment_term_id']" position="after">
+          <field name="purchase_order" string="Purchase Order #" />
+        </xpath>
+        <xpath expr="//field[@name='picking_policy']" position="after">
+          <field name="delivery_confirmation_option" string="Delivery Confirmation Option" />
+          <field name="delivery_confirmation_signature_required" string="Delivery Confirmation Signature Required" />
+          <field name="declared_value_option" string="Declared Value Option" />
+          <field name="declared_value_amount" string="Declared Value Amount" />
+        </xpath>
+        <xpath expr="//field[@name='fiscal_position_id']" position="after">
+          <field name="credit_note" string="Credit Note" />
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/group[1]" position="after">
+          <group name="studio_group_whUnJ">
+            <group name="studio_group_whUnJ_left" string="Shipping Account">
+              <field name="ups_account" string="UPS Account #" />
+              <field name="fedex_account" string="FedEx Account #" />
+            </group>
+            <group name="studio_group_whUnJ_right" />
+          </group>
+        </xpath>
+      </data>
+    </field>
+    <field name="inherit_id" ref="sale.view_order_form" />
+    <field name="model">sale.order</field>
+    <field name="name">newbiiz.view.order.form</field>
+    <field name="type">form</field>
+  </record>
+</odoo>
