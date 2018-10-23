@@ -129,7 +129,7 @@
           <page name="studio_page_7TUU9" string="Customer">
             <group name="studio_group_7TUU9">
               <group name="studio_group_7TUU9_left" string="Credit Information">
-                <field name="credit_line" string="Credit Line" />
+                <field name="credit_limit" string="Credit Limit"/>
                 <field name="insurance" string="Insurance" />
                 <field name="d_b_no" string="D &amp; B No." />
                 <field name="d_b_rating" string="D &amp; B Rating" />

@@ -23,26 +23,4 @@
       </data>
     </field>
   </record>
-
-  <record model="ir.ui.view" id="view_partner_newbiiz_form">
-    <field eval="True" name="active"/>
-    <field type="xml" name="arch">
-      <data>
-        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
-          <page string="Customer">
-            <group>
-              <group string="Credit Information">
-                <!--<field name="x_studio_field_h5OQj" string="Credit Line"/>-->
-                <field name="credit_limit" string="Credit Limit"/>
-              </group>
-            </group>
-          </page>
-        </xpath>
-      </data>
-    </field>
-    <field name="inherit_id" ref="base.view_partner_form"/>
-    <field name="model">res.partner</field>
-    <field name="name">view.partner_newbiiz.form</field>
-    <field name="type">form</field>
-  </record>
 </odoo>
