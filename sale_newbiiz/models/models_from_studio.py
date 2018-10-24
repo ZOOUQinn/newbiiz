@@ -137,13 +137,13 @@ class Res_Partner(models.Model):
     how_did_you_find_out_about_ma_labs = fields.Selection(string='How did you find out about Ma Labs', selection=[['trade_show_ces', 'Trade Show - CES'], ['trade_show_cebit', 'Trade Show - CeBIT'], ['trade_show_computex_taipei', 'Trade Show - Computex Taipei'], ['trade_show_other', 'Trade Show - Other'], ['referred_by_another_company', 'Referred by another company'], ['advertisement_print_ad', 'Advertisement - Print Ad'], ['advertisement_online', 'Advertisement - Online'], ['advertisement_other', 'Advertisement - Other']])
     ups_account = fields.Char(string='UPS Account #')
     fedex_account = fields.Char(string='FedEx Account #')
+    contact_name = fields.Char(string='Contact Name')
 
 
 class Sale_Order(models.Model):
     _inherit = 'sale.order'
     
     credit_note = fields.Text(string='Credit Note')
-    purchase_order = fields.Char(string='Purchase Order #')
     re_sell_certificate = fields.Char(string='Re-sell Certificate')
     ups_account = fields.Char(string='UPS Account #')
     ups_account = fields.Char(string='UPS Account #')
@@ -152,3 +152,4 @@ class Sale_Order(models.Model):
     delivery_confirmation_signature_required = fields.Selection(string='Delivery Confirmation Signature Required', selection=[['y', 'Y'], ['n', 'N']])
     declared_value_option = fields.Selection(string='Declared Value Option', selection=[['y', 'Y'], ['n', 'N']])
     declared_value_amount = fields.Char(string='Declared Value Amount')
+    blind_shipment = fields.Selection(string='Blind Shipment', selection=[['y', 'Y'], ['n', 'N']])

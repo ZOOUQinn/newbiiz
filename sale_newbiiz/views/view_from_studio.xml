@@ -58,6 +58,7 @@
           <field name="owner_name" string="Owner Name" />
         </xpath>
         <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='function']" position="before">
+          <field name="contact_name" string="Contact Name" />
           <field name="job_position" string="Job Position" />
         </xpath>
         <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='email']" position="after">
@@ -241,6 +242,7 @@
           <field name="delivery_confirmation_signature_required" string="Delivery Confirmation Signature Required" />
           <field name="declared_value_option" string="Declared Value Option" />
           <field name="declared_value_amount" string="Declared Value Amount" />
+          <field name="blind_shipment" string="Blind Shipment" />
         </xpath>
         <xpath expr="//field[@name='fiscal_position_id']" position="after">
           <field name="credit_note" string="Credit Note" />

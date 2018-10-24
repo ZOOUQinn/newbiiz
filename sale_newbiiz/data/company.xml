@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-  <data>
+  <data noupdate="1">
     <record id="base.main_company" model="res.company">
       <field name="currency_id" ref="base.CAD"/>
     </record>

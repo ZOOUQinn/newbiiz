@@ -27,8 +27,7 @@ class SaleOrder(models.Model):
         else:
             return super(SaleOrder, self).action_confirm()
 
-    resell_cert = fields.Char(string='Re-sell Certificate')
-    po = fields.Many2one(comodel_name='purchase.order', string='Purchase Order #')
+    purchase_order = fields.Many2one(comodel_name='purchase.order', string='Purchase Order #')
 
 
 class SaleOrderLine(models.Model):
