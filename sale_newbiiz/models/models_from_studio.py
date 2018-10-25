@@ -3,13 +3,13 @@ from odoo import models, fields
 
 class Res_Users(models.Model):
     _inherit = 'res.users'
-    
+
     employee_name = fields.Char(string='Employee Name')
 
 
 class Product_Template(models.Model):
     _inherit = 'product.template'
-    
+
     ma_labs_list = fields.Char(string='Ma Labs List #')
     item = fields.Char(string='Item #')
     mfr_part = fields.Char(string='Mfr Part #')
@@ -33,7 +33,7 @@ class Product_Template(models.Model):
 
 class Res_Partner(models.Model):
     _inherit = 'res.partner'
-    
+
     customer_id = fields.Char(string='Customer ID')
     vendor_number = fields.Char(string='Vendor Number')
     owner_name = fields.Char(string='Owner Name')
@@ -142,7 +142,7 @@ class Res_Partner(models.Model):
 
 class Sale_Order(models.Model):
     _inherit = 'sale.order'
-    
+
     credit_note = fields.Text(string='Credit Note')
     re_sell_certificate = fields.Char(string='Re-sell Certificate')
     ups_account = fields.Char(string='UPS Account #')

@@ -29,6 +29,18 @@ class SaleOrder(models.Model):
 
     purchase_order = fields.Many2one(comodel_name='purchase.order', string='Purchase Order #')
 
+    @api.depends('order_line.price_total', 'payment_term_id')
+    def _amount_all(self):
+
+        super(SaleOrder, self)._amount_all()
+
+        for order in self:
+            total_rate = order.payment_term_id.total_rate
+            order.update({
+
+                'amount_total': order.amount_total * total_rate,
+            })
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -51,3 +63,9 @@ class SaleOrderLine(models.Model):
             self.is_danger = True
         else:
             self.is_danger = False
+
+
+class AccountPaymentTerm(models.Model):
+    _inherit = 'account.payment.term'
+
+    total_rate = fields.Float(string='Total Rate', default=1.0, digits=(5,3))
