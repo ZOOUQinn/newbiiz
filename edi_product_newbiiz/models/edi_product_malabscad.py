@@ -61,9 +61,9 @@ class EdiProductMalabsCADRecord(models.Model):
     def _product_values(self, record_vals):
         product_vals = super()._product_values(record_vals)
         product_vals.update({
-            'length': record_vals.get('length', 0) * 2.54,
-            'width': record_vals.get('width', 0) * 2.54,
-            'height': record_vals.get('height', 0) * 2.54,
+            'length': record_vals.get('length', 0),
+            'width': record_vals.get('width', 0),
+            'height': record_vals.get('height', 0),
         })
         product_vals.update({
             # 'barcode': record_vals['name'],
