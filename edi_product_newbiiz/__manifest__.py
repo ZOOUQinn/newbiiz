@@ -1,7 +1,7 @@
 {
     'name': "EDI for Products",
     'version': '0.1',
-    'depends': ['edi', 'sale_newbiiz'],
+    'depends': ['edi', 'product_newbiiz'],
     'website': "http://www.newbiiz.com",
     'author': "ZOOU Qinn <qinn.zou@newbiiz.com>",
     'category': "Extra Tools",

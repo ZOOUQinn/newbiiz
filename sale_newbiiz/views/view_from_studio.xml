@@ -12,43 +12,6 @@
     <field name="name">newbiiz.view.users.form</field>
     <field name="type">form</field>
   </record>
-  <record id="newbiiz_product_template_only_form_view" model="ir.ui.view">
-    <field name="arch" type="xml">
-      <data>
-        <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]/group[@name='group_general']/field[@name='type']" position="before">
-          <field name="ma_labs_list" string="Ma Labs List #" />
-          <field name="item" string="Item #" />
-          <field name="mfr_part" string="Mfr Part #" />
-          <field name="descript" string="Descript" />
-          <field name="upc_code" string="UPC Code" />
-          <field name="manufacturer" string="Manufacturer" />
-          <field name="package" string="Package" />
-          <field name="unit" string="Unit" />
-        </xpath>
-        <xpath expr="//field[@name='barcode']" position="after">
-          <field name="website_description" string="Website Description" />
-        </xpath>
-        <xpath expr="//field[@name='list_price']" position="before">
-          <field name="instant_rebate" string="Instant Rebate" />
-          <field name="instant_rebate_start" string="Instant Rebate Start" />
-          <field name="instant_rebate_end" string="Instant Rebate End" />
-          <field name="currency_rate" string="Currency Rate" />
-          <field name="currency_rate_date" string="Currency Rate Date" />
-          <field name="usd_sales_price" string="USD - Sales Price" />
-          <field name="usd_cost" string="USD - Cost" />
-        </xpath>
-        <xpath expr="//field[@name='responsible_id']" position="after">
-          <field name="width_cm" string="Width (cm)" />
-          <field name="height_cm" string="Height (cm)" />
-          <field name="length_cm" string="Length (cm)" />
-        </xpath>
-      </data>
-    </field>
-    <field name="inherit_id" ref="product.product_template_only_form_view" />
-    <field name="model">product.template</field>
-    <field name="name">newbiiz.product.template.only.form.view</field>
-    <field name="type">form</field>
-  </record>
   <record id="newbiiz_view_partner_form" model="ir.ui.view">
     <field name="arch" type="xml">
       <data>

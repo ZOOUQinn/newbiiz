@@ -5,11 +5,10 @@
     'description': '',
     'author': 'ZOOU Qinn <qinn.zou@newbiiz.com>',
     'depends': [
-        'sale_management', 'sale_stock',
+        'sale_management', 'product_newbiiz',
     ],
     'data': [
         'data/global.xml',
-        'data/company.xml',
         # 'reports/report.xml',
         'views/view.xml',
         'views/view_from_studio.xml',
