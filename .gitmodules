@@ -1,0 +1,4 @@
+[submodule "unipartdigital/odoo-edi/addons"]
+	path = unipartdigital/odoo-edi/addons
+	url = git@github.com:unipartdigital/odoo-edi.git
+	branch = master
