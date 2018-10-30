@@ -38,10 +38,10 @@ class EdiProductMalabsCADRecord(models.Model):
     _description = "Product"
 
     # name
-    ma_labs_list_no = fields.Char(string='Ma Labs List #')
-    item_no = fields.Char(string='Item #')
+    ma_labs_list = fields.Char(string='Ma Labs List #')
+    item = fields.Char(string='Item #')
     barcode = fields.Char(string='Barcode')
-    mfr_part_no = fields.Char(string='Mfr Part #')
+    mfr_part = fields.Char(string='Mfr Part #')
     manufacturer = fields.Char(string='Manufacturer')
     package = fields.Selection(string='Package', selection=PACKAGE)
     unit = fields.Char(string='Unit')
@@ -52,29 +52,30 @@ class EdiProductMalabsCADRecord(models.Model):
     price = fields.Float(string='Sales Price', default=0)
     cost = fields.Float(string='Cost', default=0)
     instant_rebate = fields.Char(string='Instant Rebate')
-    ir_start = fields.Datetime(string='Instant Rebate Start')
-    ir_end = fields.Datetime(string='Instant Rebate End')
-    # website_description
+    instant_rebate_start = fields.Datetime(string='Instant Rebate Start')
+    instant_rebate_end = fields.Datetime(string='Instant Rebate End')
+    website_description = fields.Html()
     image = fields.Binary(string='Image')
 
     @api.model
     def _product_values(self, record_vals):
         product_vals = super()._product_values(record_vals)
         product_vals.update({
-            'length': record_vals.get('length', 0),
-            'width': record_vals.get('width', 0),
-            'height': record_vals.get('height', 0),
+            'length_cm': record_vals.get('length', 0),
+            'width_cm': record_vals.get('width', 0),
+            'height_cm': record_vals.get('height', 0),
         })
         product_vals.update({
             # 'barcode': record_vals['name'],
-            'weight': record_vals.get('weight', 0) * 0.45359237,
+            'weight': record_vals.get('weight', 0),
             'volume': record_vals.get('length', 0)*record_vals.get('width', 0)*record_vals.get('height', 0) / (100 ** 3),
-            'usd_sales_price': record_vals.get('price', 0),
-            'usd_cost': record_vals.get('cost', 0),
+            # 'usd_sales_price': record_vals.get('price', 0),
+            # 'usd_cost': record_vals.get('cost', 0),
             'currency_rate': self.doc_id.currency_rate,
             'currency_rate_date': self.doc_id.currency_rate_datetime,
             'list_price': record_vals.get('price', 0),
             'standard_price': record_vals.get('cost', 0),
+            'type': 'product',
         })
         del product_vals['price']
         return product_vals
@@ -118,8 +119,8 @@ class EdiProductMalabsCADDocument(models.AbstractModel):
                 del d['image']
             d['type'] = d.get('Product Type', None)
             d['categ_id'] = d.get('Internal Category', None)
-            d['ma_labs_list_no'] = d.get('Ma Labs List #', None)
-            d['mfr_part_no'] = d.get('Mfr Part #', None)
+            d['ma_labs_list'] = d.get('Ma Labs List #', None)
+            d['mfr_part'] = d.get('Mfr Part #', None)
             d['manufacturer'] = d.get('Manufacturer', None)
             # d['package'] = d.get('Package', None)
             d['unit'] = d.get('Unit', None)
@@ -127,21 +128,24 @@ class EdiProductMalabsCADDocument(models.AbstractModel):
 
             try:
                 fields.Datetime().from_string(d.get('Instant Rebate Start', None))
-                d['ir_start'] = d.get('Instant Rebate Start', None)
+                d['instant_rebate_start'] = d.get('Instant Rebate Start', None)
             except ValueError:
-                d['ir_start'] = fields.Datetime().now()
+                d['instant_rebate_start'] = fields.Datetime().now()
 
             try:
                 fields.Datetime().from_string(d.get('Instant Rebate End', None))
-                d['ir_end'] = d.get('Instant Rebate End', None)
+                d['instant_rebate_end'] = d.get('Instant Rebate End', None)
             except ValueError:
-                d['ir_end'] = fields.Datetime().to_string(fields.Datetime().from_string(d.get('ir_start', None)) + timedelta(days=30))
+                d['instant_rebate_end'] = fields.Datetime().to_string(fields.Datetime().from_string(d.get('instant_rebate_start', None)) + timedelta(days=30))
 
             d['length'] = d.get('Length', 0)
 
             for selection in PACKAGE:
                 if selection[1] == d.get('Package', None):
                     d['package'] = selection[0]
+
+            d['item'] = d.get('item_no', None)
+            del d['item_no']
 
             data.append(d)
         return data
