@@ -11,7 +11,7 @@ Key Features
 
 Information
 -----------
-#. 依赖第三方模块 `edi <https://github.com/unipartdigital/odoo-edi>`_ 。
+#. 依赖第三方模块 `edi_product <https://github.com/unipartdigital/odoo-edi/tree/master/addons/edi_product>`_ 。
 #. 配合定制模块 *product_newbiiz* 。
 #. 以2018年10月15日 *odoo_products_20181015.csv* [1]_ 作为解析对象。
 

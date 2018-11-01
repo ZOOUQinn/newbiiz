@@ -6,7 +6,7 @@
     <record id="malabscad_record_form" model="ir.ui.view">
       <field name="name">edi.product.malabscad.record.form</field>
       <field name="model">edi.product.malabscad.record</field>
-      <field name="inherit_id" ref="record_form"/>
+      <field name="inherit_id" ref="edi_product.record_form"/>
       <field name="mode">primary</field>
       <field name="arch" type="xml">
         <xpath expr="//group[@name='basic']" position="after">
@@ -14,6 +14,9 @@
             <field name="weight"/>
           </group>
         </xpath>
+        <field name="description" position="replace">
+          <field name="website_description"/>
+        </field>
       </field>
     </record>
 
@@ -21,15 +24,15 @@
     <record id="malabscad_record_tree" model="ir.ui.view">
       <field name="name">edi.product.malabscad.record.tree</field>
       <field name="model">edi.product.malabscad.record</field>
-      <field name="inherit_id" ref="record_tree"/>
+      <field name="inherit_id" ref="edi_product.record_tree"/>
       <field name="mode">primary</field>
       <field name="arch" type="xml">
         <xpath expr="//tree" position="inside">
-          <field name="weight"/>
-          <field name="length"/>
-          <field name="width"/>
-          <field name="height"/>
+          <field name="price"/>
+          <field name="cost"/>
+          <field name="image"/>
         </xpath>
+        <field name="description" position="replace"/>
       </field>
     </record>
 
@@ -40,7 +43,7 @@
       <field name="res_model">edi.product.malabscad.record</field>
       <field name="view_type">form</field>
       <field name="view_id" ref="malabscad_record_tree"/>
-      <field name="search_view_id" ref="record_search"/>
+      <field name="search_view_id" ref="edi_product.record_search"/>
       <field name="context">{'create': False}</field>
     </record>
 
@@ -60,17 +63,7 @@
           <page name="product_malabscad" string="Products"
         	attrs="{'invisible':['!',('rec_type_names','ilike',
         				  '/edi.product.malabscad.record/')]}">
-            <field name="product_malabscad_ids" readonly="1">
-              <tree>
-                <field name="name"/>
-                <field name="product_id"/>
-                <field name="description"/>
-                <field name="weight"/>
-                <field name="length"/>
-                <field name="width"/>
-                <field name="height"/>
-              </tree>
-            </field>
+            <field name="product_malabscad_ids" readonly="1"/>
           </page>
         </xpath>
       </field>
