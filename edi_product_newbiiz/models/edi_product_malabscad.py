@@ -35,7 +35,11 @@ class EdiProductMalabsCADRecord(models.Model):
 
     _name = 'edi.product.malabscad.record'
     _inherit = 'edi.product.record'
-    _description = "Product"
+    _description = 'Product Malabs'
+    _sql_constraints = [
+        ('doc_name_uniq', 'unique (doc_id, name, item, barcode)',
+         "Each synchronizer key may appear at most once per document")
+    ]
 
     # name
     ma_labs_list = fields.Char(string='Ma Labs List #')
@@ -76,7 +80,12 @@ class EdiProductMalabsCADRecord(models.Model):
                 r = requests.get(image)
                 if r.status_code == 200:
                     image = base64.b64encode(r.content).decode("utf-8")
+                    product_vals.update({'image': image})
             except requests.exceptions.MissingSchema as err:
+                pass
+            except requests.exceptions.ConnectTimeout as err:
+                pass
+            except requests.exceptions.ConnectionError as err:
                 pass
 
         product_vals.update({
@@ -92,11 +101,9 @@ class EdiProductMalabsCADRecord(models.Model):
             'list_price': record_vals.get('price', 0),
             'standard_price': record_vals.get('cost', 0),
             'type': 'product',
-            'image': image,
             'name': record_vals.get('name', None),
             'ma_labs_list': record_vals.get('ma_labs_list', None),
             'item': record_vals.get('item', None),
-            'barcode': record_vals.get('barcode', None),
             'mfr_part': record_vals.get('mfr_part', None),
             'manufacturer': record_vals.get('manufacturer', None),
             'package': record_vals.get('package', None),
@@ -107,6 +114,11 @@ class EdiProductMalabsCADRecord(models.Model):
             # 'categ_id': record_vals.get('category', None), TODO
             'website_description': record_vals.get('website_description', None),
         })
+
+        barcode = record_vals.get('barcode', None)
+        if barcode:
+            product_vals.update({'barcode': barcode})
+
         return product_vals
 
 
