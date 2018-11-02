@@ -10,13 +10,17 @@ document format comprising a CSV file with a fixed list of columns:
 """
 import base64
 import csv
-from datetime import datetime, timedelta
+import logging
+from datetime import timedelta
 
 import requests
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 PACKAGE = [('retail', 'RETAIL'), ('bulk', 'BULK')]
+
+_logger = logging.getLogger(__name__)
+
 
 class EdiDocument(models.Model):
     """Extend ``edi.document`` to include EDI product tutorial records"""
@@ -28,6 +32,28 @@ class EdiDocument(models.Model):
 
     currency_rate = fields.Float(string='Currency Rate', default=1)
     currency_rate_datetime = fields.Datetime(string='Currency Rate Datetime')
+
+
+def get_b64encode(image_url, max_count):
+    image = None
+
+    if image_url:
+        i = 0
+        while i < max_count:
+            i += 1
+            try:
+                r = requests.get(image_url)
+                if r.status_code == 200:
+                    image = base64.b64encode(r.content).decode("utf-8")
+                    _logger.info(msg=_('Get Image from %s' % (image_url,)))
+                    break
+                msg=' '.join((str(i), image_url, str(r.status_code)))
+            except Exception as err:
+                msg=' '.join((str(i), image_url, str(err)))
+
+            _logger.warning(msg=msg)
+
+    return image
 
 
 class EdiProductMalabsCADRecord(models.Model):
@@ -74,19 +100,9 @@ class EdiProductMalabsCADRecord(models.Model):
         '''
         product_vals = super().target_values(record_vals)
 
-        image = record_vals.get('image', None)
+        image = get_b64encode(image_url=record_vals.get('image', None), max_count=5)
         if image:
-            try:
-                r = requests.get(image)
-                if r.status_code == 200:
-                    image = base64.b64encode(r.content).decode("utf-8")
-                    product_vals.update({'image': image})
-            except requests.exceptions.MissingSchema as err:
-                pass
-            except requests.exceptions.ConnectTimeout as err:
-                pass
-            except requests.exceptions.ConnectionError as err:
-                pass
+            product_vals.update({'image': image})
 
         product_vals.update({
             'length_cm': record_vals.get('length', 0),
@@ -138,8 +154,7 @@ class EdiProductMalabsCADDocument(models.AbstractModel):
         :return: an iterable of dictionaries, each of which could
         passed to :meth:`edi.product.malabscad.record.create`.
         """
-        reader_origin = csv.reader(data.decode().splitlines())
-        # TODO: recode later
+        reader_origin = csv.reader(data.decode(errors="ignore").splitlines())
         reader = []
         for row in reader_origin:
             reader.append(row)
