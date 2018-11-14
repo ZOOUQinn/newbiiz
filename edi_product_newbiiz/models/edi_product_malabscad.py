@@ -63,8 +63,9 @@ class EdiProductMalabsCADRecord(models.Model):
     _inherit = 'edi.product.record'
     _description = 'Product Malabs'
     _sql_constraints = [
-        ('doc_name_uniq', 'unique (doc_id, name, item, barcode)',
-         "Each synchronizer key may appear at most once per document")
+        ('doc_name_uniq', 'unique (doc_id, name, item)',
+         "Each synchronizer key may appear at most once per document"),
+        ('doc_bar_unique', 'unique (doc_id, barcode)', "A barcode can only be assigned to one product !")
     ]
 
     # name
@@ -212,6 +213,9 @@ class EdiProductMalabsCADDocument(models.AbstractModel):
                 'item_no',
             ):
                 del d[key]
+
+            if not d.get('barcode', None):
+                del d['barcode']
 
             data.append(d)
         return data
