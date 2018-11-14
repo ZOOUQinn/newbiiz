@@ -64,6 +64,13 @@ class SaleOrderLine(models.Model):
         else:
             self.is_danger = False
 
+    product_item = fields.Char(string='Product Item #', compute='_compute_item')
+
+    @api.depends('product_id')
+    def _compute_item(self):
+        for rec in self:
+            rec.product_item = rec.product_id.item
+
 
 class AccountPaymentTerm(models.Model):
     _inherit = 'account.payment.term'
