@@ -1,4 +1,12 @@
-[submodule "unipartdigital/odoo-edi"]
-	path = unipartdigital/odoo-edi
-	url = git@github.com:unipartdigital/odoo-edi.git
+[submodule "odoo-edi"]
+	path = odoo-edi
+	url = https://github.com/unipartdigital/odoo-edi.git
 	branch = master
+[submodule "connector"]
+	path = connector
+	url = https://github.com/OCA/connector.git
+	branch = 11.0
+[submodule "queue"]
+	path = queue
+	url = https://github.com/OCA/queue.git
+	branch = 11.0
