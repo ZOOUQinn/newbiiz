@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mc_backend_malabs,access_mc_backend_malabs,model_mc_backend,base.group_system,1,1,1,1
+access_malabs_product_product,access_malabs_product_product,model_malabs_product_product,base.group_system,1,1,1,1
