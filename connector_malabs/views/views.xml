@@ -1,0 +1,64 @@
+<odoo>
+  <record id="view_mc_backend_tree" model="ir.ui.view">
+    <field name="name">mc.backend.tree</field>
+    <field name="model">mc.backend</field>
+    <field name="type">tree</field>
+    <field name="priority" eval="8"/>
+    <field name="arch" type="xml">
+      <tree string="Backend">
+        <field name="name"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_mc_backend_form" model="ir.ui.view">
+    <field name="name">mc.backend.form</field>
+    <field name="model">mc.backend</field>
+    <field name="type">form</field>
+    <field name="priority" eval="8"/>
+    <field name="arch" type="xml">
+      <form string="Backend">
+        <header>
+          <field name="state" widget="statusbar"/>
+          <button name="import_products" type="object" class="oe_highlight"
+                  string="Import Products" attrs="{'invisible':[('state','in',['done'])]}"/>
+        </header>
+        <sheet>
+          <div name="button_box" class="oe_button_box">
+            <div>
+              <button name="action_view_inputs" type="object" class="oe_stat_button" icon="fa-paperclip">
+                <field name="input_count" widget="statinfo" string="Inputs"/>
+              </button>
+              <button name="action_view_outputs" type="object" class="oe_stat_button" icon="fa-paperclip">
+                <field name="output_count" widget="statinfo" string="Outputs"/>
+              </button>
+            </div>
+          </div>
+          <group>
+            <field name="name"/>
+          </group>
+
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="act_open_mc_backend_view">
+    <field name="name">CSV Task</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">mc.backend</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[]</field>
+    <field name="context">{}</field>
+  </record>
+
+
+  <menuitem id="menu_mc_backend" parent="connector.menu_connector_root"
+            sequence="20" name="Ma Labs"/>
+
+  <menuitem id="menu_mc_csv" parent="menu_mc_backend" name="CSV"/>
+  <menuitem id="menu_mc_csv_task" parent="menu_mc_csv" action="act_open_mc_backend_view"/>
+
+</odoo>
