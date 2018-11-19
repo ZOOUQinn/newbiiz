@@ -1,5 +1,5 @@
 {
-    'name': 'Products Newbiiz',
+    'name': 'Products Malabs',
     'version': '1.0',
     'category': 'Sales',
     'depends': ['product', 'sale_stock',],
