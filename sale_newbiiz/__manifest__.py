@@ -5,7 +5,7 @@
     'description': '',
     'author': 'ZOOU Qinn <qinn.zou@newbiiz.com>',
     'depends': [
-        'sale_management', 'product_newbiiz',
+        'sale_management', 'product_malabs',
     ],
     'data': [
         'data/global.xml',

@@ -129,3 +129,16 @@ class Sale_Order(models.Model):
     declared_value_option = fields.Selection(string='Declared Value Option', selection=[['y', 'Y'], ['n', 'N']])
     declared_value_amount = fields.Char(string='Declared Value Amount')
     blind_shipment = fields.Selection(string='Blind Shipment', selection=[['y', 'Y'], ['n', 'N']])
+
+class Purchase_Order_Line(models.Model):
+    _inherit = 'purchase.order.line'
+
+    item_no = fields.Char(string='Item No')
+    list_no = fields.Char(string='List No')
+
+
+class Sale_Order_Line(models.Model):
+    _inherit = 'sale.order.line'
+
+    item_no = fields.Char(string='Item No')
+    list_no = fields.Char(string='List No')

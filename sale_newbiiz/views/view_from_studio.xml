@@ -200,6 +200,10 @@
         <xpath expr="//field[@name='payment_term_id']" position="after">
           <field name="purchase_order" string="Purchase Order #" />
         </xpath>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='product_id']" position="after">
+          <field name="item_no" string="Item No" />
+          <field name="list_no" string="List No" />
+        </xpath>
         <xpath expr="//field[@name='picking_policy']" position="after">
           <field name="delivery_confirmation_option" string="Delivery Confirmation Option" />
           <field name="delivery_confirmation_signature_required" string="Delivery Confirmation Signature Required" />
@@ -224,6 +228,20 @@
     <field name="inherit_id" ref="sale.view_order_form" />
     <field name="model">sale.order</field>
     <field name="name">newbiiz.view.order.form</field>
+    <field name="type">form</field>
+  </record>
+  <record id="newbiiz_purchase_order_form" model="ir.ui.view">
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='product_id']" position="after">
+          <field name="item_no" string="Item No" />
+          <field name="list_no" string="List No" />
+        </xpath>
+      </data>
+    </field>
+    <field name="inherit_id" ref="purchase.purchase_order_form" />
+    <field name="model">purchase.order</field>
+    <field name="name">newbiiz.purchase.order.form</field>
     <field name="type">form</field>
   </record>
 </odoo>
