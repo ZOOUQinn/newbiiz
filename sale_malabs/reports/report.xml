@@ -4,9 +4,9 @@
           string="Newbiiz POS Report"
           model="sale.order"
           report_type="qweb-pdf"
-          name="sale_newbiiz.newbiiz_sale_template"/>
+          name="sale_malabs.newbiiz_sale_template"/>
 
-  <template id="newbiiz_sale_template">
+  <template id="malabs_sale_template">
     <t t-call="web.html_container">
       <t t-call="web.external_layout">
         <div class="page">
