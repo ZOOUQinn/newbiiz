@@ -16,6 +16,7 @@
 
         <xpath expr="//tree/field[@name='product_id']" position="after">
           <field name="product_item"/>
+          <field name="product_list"/>
         </xpath>
         <xpath expr="//tree/field[@name='name']" position="replace"/>
 

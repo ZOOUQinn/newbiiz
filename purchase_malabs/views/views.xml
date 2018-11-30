@@ -1,40 +1,16 @@
 <odoo>
-  <template id="report_purchaseorder_document_1" inherit_id="purchase.report_purchaseorder_document">
-    <xpath expr="//div[hasclass('page')]/table/thead/tr" position="replace">
-      <tr>
-        <th><strong>Item #</strong></th>
-        <th><strong>List #</strong></th>
-        <th><strong>Mfr Part #</strong></th>
-        <th><strong>Sales Price</strong></th>
-        <th><strong>Taxes</strong></th>
-        <th class="text-right"><strong>Qty</strong></th>
-        <th class="text-right"><strong>Unit Price</strong></th>
-        <th class="text-right"><strong>Amount</strong></th>
-      </tr>
-    </xpath>
-  </template>
-
-  <template id="report_purchaseorder_document_2" inherit_id="purchase.report_purchaseorder_document">
-    <xpath expr="//div[hasclass('page')]/table/tbody/tr" position="replace">
-      <tr t-foreach="o.order_line" t-as="line">
-        <td><span t-field="line.product_id.item"/></td>
-        <td><span t-field="line.product_id.ma_labs_list"/></td>
-        <td><span t-field="line.product_id.mfr_part"/></td>
-        <td><span t-field="line.product_id.list_price"/></td>
-        <td>
-          <span t-esc="', '.join(map(lambda x: x.name, line.taxes_id))"/>
-        </td>
-        <td class="text-right">
-          <span t-field="line.product_qty"/>
-        </td>
-        <td class="text-right">
-          <span t-field="line.price_unit"/>
-        </td>
-        <td class="text-right">
-          <span t-field="line.price_subtotal"
-                t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-        </td>
-      </tr>
-    </xpath>
-  </template>
+  <record id="malabs_purchase_order_form" model="ir.ui.view">
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='product_id']" position="after">
+          <field name="product_item"/>
+          <field name="product_list"/>
+        </xpath>
+      </data>
+    </field>
+    <field name="inherit_id" ref="purchase.purchase_order_form" />
+    <field name="model">purchase.order</field>
+    <field name="name">malabs.purchase.order.form</field>
+    <field name="type">form</field>
+  </record>
 </odoo>
