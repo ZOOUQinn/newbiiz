@@ -122,7 +122,6 @@ class Sale_Order(models.Model):
     credit_note = fields.Text(string='Credit Note')
     re_sell_certificate = fields.Char(string='Re-sell Certificate')
     ups_account = fields.Char(string='UPS Account #')
-    ups_account = fields.Char(string='UPS Account #')
     fedex_account = fields.Char(string='FedEx Account #')
     delivery_confirmation_option = fields.Selection(string='Delivery Confirmation Option', selection=[['y', 'Y'], ['n', 'N']])
     delivery_confirmation_signature_required = fields.Selection(string='Delivery Confirmation Signature Required', selection=[['y', 'Y'], ['n', 'N']])

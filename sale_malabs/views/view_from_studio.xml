@@ -193,10 +193,6 @@
         <xpath expr="//field[@name='partner_shipping_id']" position="after">
           <field name="re_sell_certificate" string="Re-sell Certificate" />
         </xpath>
-        <xpath expr="//field[@name='payment_term_id']" position="attributes">
-          <attribute name="attrs">{}</attribute>
-          <attribute name="readonly">1</attribute>
-        </xpath>
         <xpath expr="//field[@name='payment_term_id']" position="after">
           <field name="purchase_order" string="Purchase Order #" />
         </xpath>

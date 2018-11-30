@@ -36,10 +36,10 @@ class SaleOrder(models.Model):
 
         for order in self:
             total_rate = order.payment_term_id.total_rate
-            order.update({
-
-                'amount_total': order.amount_total * total_rate,
-            })
+            if total_rate:
+                order.update({
+                    'amount_total': order.amount_total * total_rate,
+                })
 
 
 class SaleOrderLine(models.Model):
