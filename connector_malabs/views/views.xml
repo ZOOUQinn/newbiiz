@@ -1,12 +1,13 @@
 <odoo>
   <record id="view_mc_backend_tree" model="ir.ui.view">
-    <field name="name">mc.backend.tree</field>
-    <field name="model">mc.backend</field>
+    <field name="name">mccsv.backend.tree</field>
+    <field name="model">mccsv.backend</field>
     <field name="type">tree</field>
     <field name="priority" eval="8"/>
     <field name="arch" type="xml">
       <tree string="Backend">
         <field name="name"/>
+        <field name="create_date"/>
         <field name="state"/>
       </tree>
     </field>
@@ -14,7 +15,7 @@
 
   <record id="view_mc_backend_form" model="ir.ui.view">
     <field name="name">mc.backend.form</field>
-    <field name="model">mc.backend</field>
+    <field name="model">mccsv.backend</field>
     <field name="type">form</field>
     <field name="priority" eval="8"/>
     <field name="arch" type="xml">
@@ -25,18 +26,9 @@
                   string="Import Products" attrs="{'invisible':[('state','in',['done'])]}"/>
         </header>
         <sheet>
-          <div name="button_box" class="oe_button_box">
-            <div>
-              <button name="action_view_inputs" type="object" class="oe_stat_button" icon="fa-paperclip">
-                <field name="input_count" widget="statinfo" string="Inputs"/>
-              </button>
-              <button name="action_view_outputs" type="object" class="oe_stat_button" icon="fa-paperclip">
-                <field name="output_count" widget="statinfo" string="Outputs"/>
-              </button>
-            </div>
-          </div>
           <group>
             <field name="name"/>
+            <field name="csv_file"/>
           </group>
 
         </sheet>
@@ -47,11 +39,9 @@
   <record model="ir.actions.act_window" id="act_open_mc_backend_view">
     <field name="name">CSV Task</field>
     <field name="type">ir.actions.act_window</field>
-    <field name="res_model">mc.backend</field>
+    <field name="res_model">mccsv.backend</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
-    <field name="domain">[]</field>
-    <field name="context">{}</field>
   </record>
 
 

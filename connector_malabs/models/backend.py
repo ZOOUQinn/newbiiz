@@ -18,15 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-import platform
+import logging
 
 from odoo import models, api, fields, _
 
+_logger = logging.getLogger(__name__)
 
-class mc_backend(models.Model):
-    _name = 'mc.backend'
+class mccsv_backend(models.Model):
+    _name = 'mccsv.backend'
     _inherit = 'connector.backend'
-    _description = 'Malabs Backend Configuration'
+    _description = 'Malabs CSV Source Backend'
     name = fields.Char(string='Name', required=True)
     _backend_type = 'malabs'
 
@@ -35,51 +36,7 @@ class mc_backend(models.Model):
         ('done', 'Done'),
     ], string='Status', readonly=True, default='draft')
 
-    # Attachments (e.g. CSV files)
-    input_ids = fields.One2many('ir.attachment', 'res_id',
-                                domain=[('res_field', '=', 'input_ids')],
-                                string="Input Attachments")
-    output_ids = fields.One2many('ir.attachment', 'res_id',
-                                 domain=[('res_field', '=', 'output_ids')],
-                                 string="Output Attachments")
-    input_count = fields.Integer(string="Input Count", compute='_compute_input_count', store=True)
-    output_count = fields.Integer(string="Output Count", compute='_compute_output_count', store=True)
-
-    @api.depends('input_ids', 'input_ids.res_id')
-    def _compute_input_count(self):
-        """Compute number of input attachments (for UI display)"""
-        for doc in self:
-            doc.input_count = len(doc.input_ids)
-
-    @api.depends('output_ids', 'output_ids.res_id')
-    def _compute_output_count(self):
-        """Compute number of output attachments (for UI display)"""
-        for doc in self:
-            doc.output_count = len(doc.output_ids)
-
-    @api.multi
-    def action_view_inputs(self):
-        """View input attachments"""
-        self.ensure_one()
-        action = self.env.ref('connector_malabs.document_attachments_action').read()[0]
-        action['display_name'] = _("Inputs")
-        action['domain'] = [('res_field', '=', 'input_ids'),
-                            ('res_id', '=', self.id)]
-        action['context'] = {'default_res_field': 'input_ids',
-                             'default_res_id': self.id}
-        return action
-
-    @api.multi
-    def action_view_outputs(self):
-        """View output attachments"""
-        self.ensure_one()
-        action = self.env.ref('connector_malabs.document_attachments_action').read()[0]
-        action['display_name'] = _("Outputs")
-        action['domain'] = [('res_field', '=', 'output_ids'),
-                            ('res_id', '=', self.id)]
-        action['context'] = {'default_res_field': 'output_ids',
-                             'default_res_id': self.id}
-        return action
+    csv_file = fields.Binary(string='CSV File')
 
     def import_data(self, malabs_model):
         self.env[malabs_model].import_batch(self)
@@ -87,7 +44,8 @@ class mc_backend(models.Model):
     @api.multi
     def import_product(self):
         self.ensure_one()
-        return self.import_data('malabs.product.product')
+        self.import_data('malabs.product.product')
+        return True
 
     @api.multi
     def import_products(self):
@@ -95,4 +53,13 @@ class mc_backend(models.Model):
         for backend in self:
             backend.import_product()
             backend.state = 'done'
+        return True
+
+    @api.model
+    def send_to(self, args):
+        _logger.info(args)
+        self.create({
+            'name': args[0],
+            'csv_file': args[1].data,
+        })
         return True
