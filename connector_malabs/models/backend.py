@@ -57,10 +57,12 @@ class mccsv_backend(models.Model):
         return True
 
     @api.model
-    def send_to(self, args):
-        _logger.info(args)
-        self.create({
-            'name': args[0],
-            'csv_file': args[1].data,
+    def send_to(self, name, f, launch=False):
+        _logger.info(name)
+        id = self.create({
+            'name': name,
+            'csv_file': f.data,
         })
+        if launch:
+            id.import_products()
         return True
