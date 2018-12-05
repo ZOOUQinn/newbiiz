@@ -28,6 +28,7 @@ class mccsv_backend(models.Model):
     _name = 'mccsv.backend'
     _inherit = 'connector.backend'
     _description = 'Malabs CSV Source Backend'
+    _order = 'create_date DESC'
     name = fields.Char(string='Name', required=True)
     _backend_type = 'malabs'
 

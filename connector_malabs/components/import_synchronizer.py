@@ -188,12 +188,8 @@ class MalabsImporter(AbstractComponent):
 
         :param malabs_id: identifier of the record on MalabsCommerce
         """
-        self.malabs_id = malabs_record.get('id', None)
-        self.malabs_record= malabs_record
-        # try:
-        #     self.malabs_record = self._get_malabs_data()
-        # except IDMissingInBackend:
-        #     return _('Record does no longer exist in MalabsCommerce')
+        self.malabs_id = malabs_record.get('barcode', None)
+        self.malabs_record = malabs_record
 
         skip = self._must_skip()
         if skip:
@@ -231,11 +227,20 @@ class BatchImporter(AbstractComponent):
     _usage = 'batch.importer'
     _inherit = ['base.importer']
 
+
     def run(self, filters=None):
         """ Run the synchronization """
-        record_ids = self.backend_adapter.search(filters)
-        for record_id in record_ids:
-            self._import_record(record_id)
+        from_date = filters.pop('from_date', None)
+        to_date = filters.pop('to_date', None)
+        records = self.backend_adapter.read(
+            filters,
+            from_date=from_date,
+            to_date=to_date,
+        )
+        _logger.info('search for malabs Products %s returned %s',
+                     filters, records)
+        for record in records:
+            self._import_record(record, priority=30)
 
     def _import_record(self, record_id):
         """ Import a record directly or delay the import of the record.
@@ -251,6 +256,6 @@ class DelayedBatchImporter(AbstractComponent):
     _inherit = 'malabs.batch.importer'
     _name = 'malabs.delayed.batch.importer'
 
-    def _import_record(self, record_id, **kwargs):
+    def _import_record(self, record, **kwargs):
         """ Delay the import of the records"""
-        self.model.import_record(self.backend_record, record_id)
+        self.model.import_record(self.backend_record, record)

@@ -5,7 +5,7 @@
     <field name="type">tree</field>
     <field name="priority" eval="8"/>
     <field name="arch" type="xml">
-      <tree string="Backend">
+      <tree string="Backend" decoration-muted="state=='done'">
         <field name="name"/>
         <field name="create_date"/>
         <field name="state"/>

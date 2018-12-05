@@ -44,7 +44,7 @@ class WooBinding(models.AbstractModel):
         ondelete='restrict',
     )
 
-    malabs_id = fields.Integer(string='ID on Malabs')
+    malabs_id = fields.Char(string='ID on Malabs')
 
     _sql_constraints = [
         ('malabs_uniq', 'unique(backend_id, malabs_id)',

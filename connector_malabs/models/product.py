@@ -33,11 +33,11 @@ _logger = logging.getLogger(__name__)
 class MalabsProductProduct(models.Model):
     _name = 'malabs.product.product'
     _inherit = 'malabs.binding'
-    _inherits = {'product.product': 'openerp_id'}
+    _inherits = {'product.product': 'odoo_id'}
     _description = 'malabs product product'
 
     _rec_name = 'name'
-    openerp_id = fields.Many2one(comodel_name='product.product',
+    odoo_id = fields.Many2one(comodel_name='product.product',
                                  string='product',
                                  required=True,
                                  ondelete='cascade')
@@ -49,10 +49,6 @@ class MalabsProductProduct(models.Model):
         required=True,
     )
 
-    slug = fields.Char('Slung Name')
-    credated_at = fields.Date('created_at')
-    weight = fields.Float('weight')
-
 
 class ProductProductAdapter(Component):
     _apply_on = 'malabs.product.product'
@@ -60,31 +56,6 @@ class ProductProductAdapter(Component):
     _name = 'malabs.pruduct.adapter'
     _malabs_model = 'products'
 
-    def search(self, filters=None, from_date=None, to_date=None):
-        """ Search records according to some criteria and return a
-        list of ids
-
-        :rtype: list
-        """
-        if filters is None:
-            filters = {}
-        WOO_DATETIME_FORMAT = '%Y/%m/%d %H:%M:%S'
-        dt_fmt = WOO_DATETIME_FORMAT
-        if from_date is not None:
-            # updated_at include the created records
-            filters.setdefault('updated_at', {})
-            filters['updated_at']['from'] = from_date.strftime(dt_fmt)
-        if to_date is not None:
-            filters.setdefault('updated_at', {})
-            filters['updated_at']['to'] = to_date.strftime(dt_fmt)
-
-        res = self._call(self.malabs.location)
-
-        return res
-
-    def read_image(self, id, image_name, storeview_id=None):
-        return self._call('products',
-                          [int(id), image_name, storeview_id, 'id'])
 
 
 class ProductBatchImporter(Component):
@@ -95,20 +66,6 @@ class ProductBatchImporter(Component):
     _apply_on = ['malabs.product.product']
     _inherit = ['malabs.delayed.batch.importer']
     _name = 'malabs.product.batch.importer'
-
-    def run(self, filters=None):
-        """ Run the synchronization """
-        from_date = filters.pop('from_date', None)
-        to_date = filters.pop('to_date', None)
-        record_ids = self.backend_adapter.search(
-            filters,
-            from_date=from_date,
-            to_date=to_date,
-        )
-        _logger.info('search for malabs Products %s returned %s',
-                     filters, record_ids)
-        for record_id in record_ids:
-            self._import_record(record_id, priority=30)
 
 
 class ProductProductImporter(Component):
@@ -121,53 +78,6 @@ class ProductProductImporter(Component):
         record = self.malabs_record
         for malabs_category in record['categories']:
             self._import_dependency(malabs_category.get('id'), 'malabs.product.category')
-
-    def _after_import(self, binding):
-        """ Hook called at the end of the import """
-        # image_importer = self.unit_for(ProductImageImporter)
-        # image_importer.run(self.malabs_id, binding.id)
-        self.component(usage='image.importer').run(self.malabs_record, binding.id)
-        return
-
-
-class ProductImageImporter(Component):
-    """ Import images for a record.
-
-    Usually called from importers, in ``_after_import``.
-    For instance from the products importer.
-    """
-    _name = 'malabs.product.image.importer'
-    _inherit = ['base.importer']
-    _usage = 'image.importer'
-
-    def _sort_images(self, images):
-        """ Returns a list of images sorted by their priority.
-        An image with the 'image' type is the the primary one.
-        The other images are sorted by their position.
-
-        The returned list is reversed, the items at the end
-        of the list have the higher priority.
-        """
-        if not images:
-            return {}
-        # place the images where the type is 'image' first then
-        # sort them by the reverse priority (last item of the list has
-        # the the higher priority)
-
-    def _get_binary_image(self, image_data):
-        url = image_data['src']
-        return requests.get(url).content
-
-    def run(self, malabs_record, binding_id):
-        images = malabs_record.get('images')
-        binary = None
-        while not binary and images:
-            binary = self._get_binary_image(images.pop())
-        if not binary:
-            return
-        model = self.model.with_context(connector_no_export=True)
-        binding = model.browse(binding_id)
-        binding.write({'image': base64.b64encode(binary)})
 
 
 class ProductProductImportMapper(Component):
@@ -233,8 +143,8 @@ class ProductProductImportMapper(Component):
 
     @mapping
     def malabs_id(self, rec):
-        if rec.get('id', None):
-            return {'malabs_id': rec['id']}
+        if rec.get('barcode', None):
+            return {'malabs_id': rec['barcode']}
 
     @mapping
     def custom(self, rec):
