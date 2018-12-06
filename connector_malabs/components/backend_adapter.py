@@ -39,7 +39,7 @@ recorder = {}
 PACKAGE = [('retail', 'RETAIL'), ('bulk', 'BULK')]
 
 def call_to_key(method, arguments):
-    """ Used to 'freeze' the method and arguments of a call to WooCommerce
+    """ Used to 'freeze' the method and arguments of a call to MalabsCommerce
     so they can be hashable; they will be stored in a dict.
 
     Used in both the recorder and the tests.

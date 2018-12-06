@@ -19,6 +19,7 @@
 #
 #
 import logging
+import platform
 
 from odoo import models, api, fields, _
 
@@ -40,7 +41,11 @@ class mccsv_backend(models.Model):
     csv_file = fields.Binary(string='CSV File')
 
     def import_data(self, malabs_model):
-        self.env[malabs_model].import_batch(self)
+
+        if platform.system() == 'Linux':
+            self.env[malabs_model].with_delay().import_batch(self)
+        else:
+            self.env[malabs_model].import_batch(self)
 
     @api.multi
     def import_product(self):

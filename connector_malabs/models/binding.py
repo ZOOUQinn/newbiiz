@@ -28,7 +28,7 @@ class WooBinding(models.AbstractModel):
 
     """ Abstract Model for the Bindigs.
 
-    All the models used as bindings between WooCommerce and OpenERP
+    All the models used as bindings between MalabsCommerce and OpenERP
     (``woo.res.partner``, ``woo.product.product``, ...) should
     ``_inherit`` it.
     """
@@ -51,18 +51,20 @@ class WooBinding(models.AbstractModel):
          'A binding already exists with the same Woo ID.'),
     ]
 
+    @job
     @api.model
     def import_batch(self, backend, filters=None):
-        """ Prepare the import of records modified on WooCommerce """
+        """ Prepare the import of records modified on MalabsCommerce """
         if filters is None:
             filters = {}
         with backend.work_on(self._name) as work:
             importer = work.component(usage='batch.importer')
             return importer.run(filters=filters)
 
+    @job
     @api.model
     def import_record(self, backend, external_id, force=False):
-        """ Import a WooCommerce record """
+        """ Import a MalabsCommerce record """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.importer')
             return importer.run(external_id, force=force)
