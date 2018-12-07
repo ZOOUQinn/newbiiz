@@ -38,7 +38,7 @@ class WooBinding(models.AbstractModel):
 
     # openerp_id = openerp-side id must be declared in concrete model
     backend_id = fields.Many2one(
-        comodel_name='mc.backend',
+        comodel_name='mccsv.backend',
         string='Malabs Backend',
         required=True,
         ondelete='restrict',

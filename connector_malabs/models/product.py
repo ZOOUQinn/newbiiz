@@ -42,7 +42,7 @@ class MalabsProductProduct(models.Model):
                                  required=True,
                                  ondelete='cascade')
     backend_id = fields.Many2one(
-        comodel_name='mc.backend',
+        comodel_name='mccsv.backend',
         string='Malabs Backend',
         store=True,
         readonly=False,

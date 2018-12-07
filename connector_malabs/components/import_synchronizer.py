@@ -237,8 +237,7 @@ class BatchImporter(AbstractComponent):
             from_date=from_date,
             to_date=to_date,
         )
-        _logger.info('search for malabs Products %s returned %s',
-                     filters, records)
+
         for record in records:
             self._import_record(record, priority=30)
 
