@@ -20,6 +20,7 @@
 #
 import logging
 import platform
+from datetime import datetime, timedelta
 
 from odoo import models, api, fields, _
 
@@ -57,17 +58,36 @@ class mccsv_backend(models.Model):
     def import_products(self):
         """ Import categories from all websites """
         for backend in self:
-            backend.import_product()
-            backend.state = 'done'
+            if backend.state == 'draft':
+                backend.import_product()
+                backend.state = 'done'
         return True
+
+    def import_products_cron(self, id):
+        rec = self.browse([id])
+        if rec.state == 'draft':
+            rec.import_product()
+            rec.state = 'done'
 
     @api.model
     def send_to(self, name, f, launch=False):
         _logger.info(name)
-        id = self.create({
+        backend_id = self.create({
             'name': name,
             'csv_file': f.data,
-        })
+        }).id
         if launch:
-            id.import_products()
+            code = '''
+model.import_products_cron(%s)
+            ''' % backend_id
+            self.env['ir.cron'].create({
+                'name': 'Import Product from %s' % (name),
+                'model_id': self.env.ref('connector_malabs.model_mccsv_backend').id,
+                'state': 'code',
+                'code': code,
+                'interval_number': 1,
+                'interval_type': 'minutes',
+                'numbercall': 1,
+                'nextcall': fields.Datetime().to_string(datetime.now() + timedelta(minutes=1))
+            })
         return True
