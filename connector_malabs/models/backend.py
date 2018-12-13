@@ -43,10 +43,11 @@ class mccsv_backend(models.Model):
 
     def import_data(self, malabs_model):
 
-        if platform.system() == 'Linux':
-            self.env[malabs_model].with_delay().import_batch(self)
-        else:
-            self.env[malabs_model].import_batch(self)
+        # if platform.system() == 'Linux':
+        #     self.env[malabs_model].with_delay().import_batch(self)
+        # else:
+        #     self.env[malabs_model].import_batch(self)
+        self.env[malabs_model].import_batch(self)
 
     @api.multi
     def import_product(self):
@@ -86,7 +87,7 @@ model.import_products_cron(%s)
                 'state': 'code',
                 'code': code,
                 'interval_number': 1,
-                'interval_type': 'minutes',
+                'interval_type': 'hours',
                 'numbercall': 1,
                 'nextcall': fields.Datetime().to_string(datetime.now() + timedelta(minutes=1))
             })

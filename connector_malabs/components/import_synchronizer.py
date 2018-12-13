@@ -257,7 +257,8 @@ class DelayedBatchImporter(AbstractComponent):
 
     def _import_record(self, record, **kwargs):
         """ Delay the import of the records"""
-        if platform.system() == 'Linux':
-            self.model.with_delay().import_record(self.backend_record, record)
-        else:
-            self.model.import_record(self.backend_record, record)
+        # if platform.system() == 'Linux':
+        #     self.model.with_delay().import_record(self.backend_record, record)
+        # else:
+        #     self.model.import_record(self.backend_record, record)
+        self.model.import_record(self.backend_record, record)
