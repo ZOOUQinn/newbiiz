@@ -20,6 +20,7 @@
 #
 import base64
 import logging
+from datetime import datetime
 
 import requests
 from odoo.addons.component.core import Component
@@ -73,11 +74,37 @@ class ProductProductImporter(Component):
     _inherit = ['malabs.importer']
     _apply_on = ['malabs.product.product']
 
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
-        record = self.malabs_record
-        for malabs_category in record['categories']:
-            self._import_dependency(malabs_category.get('id'), 'malabs.product.category')
+    def _after_import(self, binding):
+
+        # Todo category
+
+        # Price List
+        now = datetime.now()
+        start = fields.Datetime().from_string(binding.instant_rebate_start)
+        end = fields.Datetime().from_string(binding.instant_rebate_end)
+        if binding.instant_rebate and start < now and now < end:
+            records = self.env['product.pricelist.item'].search((('product_tmpl_id', '=', binding.product_tmpl_id.id),))
+
+            if records:
+                for rec in records:
+                    rec.write({
+                        'applied_on': '1_product',
+                        'date_start': binding.instant_rebate_start,
+                        'date_end': binding.instant_rebate_end,
+                        'compute_price': 'fixed',
+                        'fixed_price': binding.list_price + float(binding.instant_rebate),
+                        'pricelist_id': self.env.ref('product_malabs.regular_rebate').id
+                    })
+            else:
+                self.env['product.pricelist.item'].create({
+                    'applied_on': '1_product',
+                    'product_tmpl_id': binding.product_tmpl_id.id,
+                    'date_start': binding.instant_rebate_start,
+                    'date_end': binding.instant_rebate_end,
+                    'compute_price': 'fixed',
+                    'fixed_price': binding.list_price + float(binding.instant_rebate),
+                    'pricelist_id': self.env.ref('product_malabs.regular_rebate').id
+                })
 
 
 class ProductProductImportMapper(Component):
@@ -104,28 +131,6 @@ class ProductProductImportMapper(Component):
     def type(self, record):
         if record:
             return {'type': 'product'}
-
-    # @mapping
-    # def categories(self, record):
-    #     if record:
-    #         malabs_categories = record['categories']
-    #         binder = self.binder_for('malabs.product.category')
-    #         category_ids = []
-    #         main_categ_id = None
-    #         for malabs_category in malabs_categories:
-    #             malabs_category_id = malabs_category.get('id')
-    #             cat_id = binder.to_openerp(malabs_category_id, unwrap=True)
-    #             if cat_id is None:
-    #                 raise MappingError("The product category with "
-    #                                    "malabs id %s is not imported." %
-    #                                    malabs_category_id)
-    #             category_ids.append(cat_id)
-    #         if category_ids:
-    #             main_categ_id = category_ids.pop(0)
-    #         result = {'malabs_categ_ids': [(6, 0, category_ids)]}
-    #         if main_categ_id:  # OpenERP assign 'All Products' if not specified
-    #             result['categ_id'] = main_categ_id
-    #         return result
 
     @mapping
     def price(self, record):

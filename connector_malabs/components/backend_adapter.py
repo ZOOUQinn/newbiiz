@@ -163,19 +163,8 @@ class WooCRUDAdapter(AbstractComponent):
                 d['instant_rebate'] = d.get('Instant Rebate', None)
                 d['length'] = d.get('Length', 0)
                 d['item'] = d.get('item_no')
-
-                try:
-                    fields.Datetime().from_string(d.get('Instant Rebate Start', None))
-                    d['instant_rebate_start'] = d.get('Instant Rebate Start', None)
-                except ValueError:
-                    d['instant_rebate_start'] = fields.Datetime().now()
-
-                try:
-                    fields.Datetime().from_string(d.get('Instant Rebate End', None))
-                    d['instant_rebate_end'] = d.get('Instant Rebate End', None)
-                except ValueError:
-                    d['instant_rebate_end'] = fields.Datetime().to_string(
-                        fields.Datetime().from_string(d.get('instant_rebate_start', None)) + timedelta(days=30))
+                d['instant_rebate_start'] = d.get('Instant Rebate Start', None)
+                d['instant_rebate_end'] = d.get('Instant Rebate End', None)
 
                 for selection in PACKAGE:
                     if selection[1] == d.get('Package', None):
