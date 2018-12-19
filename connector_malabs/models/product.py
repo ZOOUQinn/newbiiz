@@ -82,9 +82,19 @@ class ProductProductImporter(Component):
     _inherit = ['malabs.importer']
     _apply_on = ['malabs.product.product']
 
-    def _after_import(self, binding):
+    def _import_dependencies(self):
+        """ Import the dependencies for the record"""
+        record = self.malabs_record
+        categ_name = record.get('category', None)
+        categ_ids = self.env['product.category'].search([('name', '=', categ_name)])
+        if categ_ids:
+            return
+        if categ_name:
+            self.env['product.category'].create({
+                'name': categ_name
+            })
 
-        # Todo category
+    def _after_import(self, binding):
 
         # Price List
         now = datetime.now()
@@ -116,10 +126,10 @@ class ProductProductImportMapper(Component):
     _inherit = ['base.import.mapper']
     _apply_on = 'malabs.product.product'
 
-    # @mapping
-    # def in_stock(self, record):
-    #     if record:
-    #         return {'in_stock': record['in_stock']}
+    @mapping
+    def category(self, rec):
+        categ_id = self.env['product.category'].search([('name', '=', rec.get('category', None)),]).ids[0]
+        return {'categ_id': categ_id}
 
     @mapping
     def name(self, record):
