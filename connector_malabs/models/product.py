@@ -120,6 +120,21 @@ class ProductProductImporter(Component):
                 data.update({'product_tmpl_id': binding.product_tmpl_id.id})
                 self.env['product.pricelist.item'].create(data)
 
+    def _create(self, data):
+        product = self.env['product.product'].search([('barcode', '=', data.get('barcode'))])
+        if product:
+            self._validate_data(data)
+            model = self.model.with_context(connector_no_export=True)
+            model = str(model).split('()')[0]
+            binding = self.env[model].create({
+                'odoo_id': product.id,
+                'backend_id': self.backend_record.id,
+            })
+            binding.write(data)
+            return binding
+        else:
+            return super(ProductProductImporter, self)._create(data)
+
 
 class ProductProductImportMapper(Component):
     _name = 'malabs.product.import.mapper'
