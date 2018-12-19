@@ -30,6 +30,14 @@ from odoo import models, fields, _
 
 _logger = logging.getLogger(__name__)
 
+def get_rate(base='USD', symbols='CAD'):
+    url = 'https://openexchangerates.org/api/latest.json'
+    params = {'app_id': '477b87e78dd244a3b388a81951d869b1', 'base': base, 'symbols': symbols}
+    r = requests.get(url=url, params=params)
+    res = r.json()
+    return res.get('rates').get(symbols, 0), str(datetime.utcfromtimestamp(res.get('timestamp', None)))
+
+RATE, RATE_TIME = get_rate()
 
 class MalabsProductProduct(models.Model):
     _name = 'malabs.product.product'
@@ -82,40 +90,31 @@ class ProductProductImporter(Component):
         now = datetime.now()
         start = fields.Datetime().from_string(binding.instant_rebate_start)
         end = fields.Datetime().from_string(binding.instant_rebate_end)
-        if binding.instant_rebate and start < now and now < end:
-            records = self.env['product.pricelist.item'].search((('product_tmpl_id', '=', binding.product_tmpl_id.id),))
-
+        if binding.instant_rebate and float(binding.instant_rebate) and start < now and now < end:
+            records = self.env['product.pricelist.item'].search((
+                ('product_tmpl_id', '=', binding.product_tmpl_id.id),
+                ('pricelist_id', '=', self.env.ref('product_malabs.regular_rebate').id)
+            ))
+            data = {
+                'applied_on': '1_product',
+                'date_start': binding.instant_rebate_start,
+                'date_end': binding.instant_rebate_end,
+                'compute_price': 'fixed',
+                'fixed_price': binding.list_price + float(binding.instant_rebate),
+                'pricelist_id': self.env.ref('product_malabs.regular_rebate').id
+            }
             if records:
                 for rec in records:
-                    rec.write({
-                        'applied_on': '1_product',
-                        'date_start': binding.instant_rebate_start,
-                        'date_end': binding.instant_rebate_end,
-                        'compute_price': 'fixed',
-                        'fixed_price': binding.list_price + float(binding.instant_rebate),
-                        'pricelist_id': self.env.ref('product_malabs.regular_rebate').id
-                    })
+                    rec.write(data)
             else:
-                self.env['product.pricelist.item'].create({
-                    'applied_on': '1_product',
-                    'product_tmpl_id': binding.product_tmpl_id.id,
-                    'date_start': binding.instant_rebate_start,
-                    'date_end': binding.instant_rebate_end,
-                    'compute_price': 'fixed',
-                    'fixed_price': binding.list_price + float(binding.instant_rebate),
-                    'pricelist_id': self.env.ref('product_malabs.regular_rebate').id
-                })
+                data.update({'product_tmpl_id': binding.product_tmpl_id.id})
+                self.env['product.pricelist.item'].create(data)
 
 
 class ProductProductImportMapper(Component):
     _name = 'malabs.product.import.mapper'
     _inherit = ['base.import.mapper']
     _apply_on = 'malabs.product.product'
-
-    direct = [
-        ('description', 'description'),
-        ('weight', 'weight'),
-    ]
 
     # @mapping
     # def in_stock(self, record):
@@ -134,13 +133,14 @@ class ProductProductImportMapper(Component):
 
     @mapping
     def price(self, record):
-        if record:
-            return {'list_price': record and record.get('price', None) or 0.0}
-
-    @mapping
-    def sale_price(self, record):
-        if record:
-            return {'standard_price': record and record.get('cost', None) or 0.0}
+        return {
+            'currency_rate': RATE,
+            'currency_rate_date': RATE_TIME,
+            'usd_sales_price': record.get('price', 0.0),
+            'usd_cost': record.get('cost', 0.0),
+            'list_price': float(record.get('price', 0.0)) * RATE,
+            'standard_price': float(record.get('cost', 0.0)) * RATE,
+        }
 
     @mapping
     def backend_id(self, record):
@@ -153,20 +153,13 @@ class ProductProductImportMapper(Component):
 
     @mapping
     def custom(self, rec):
-        record ={
-            'weight': rec.get('weight', 0),
-            'width_cm': rec.get('width', 0),
-            'height_cm': rec.get('height', 0),
+        record = {
             'website_description': rec.get('website_description', None),
             'ma_labs_list': rec.get('ma_labs_list', None),
+            'item': rec.get('item', None),
             'mfr_part': rec.get('mfr_part', None),
             'manufacturer': rec.get('manufacturer', None),
             'unit': rec.get('unit', None),
-            'instant_rebate': rec.get('instant_rebate', None),
-            'length_cm': rec.get('length', None),
-            'item': rec.get('item', None),
-            'instant_rebate_start': rec.get('instant_rebate_start', None),
-            'instant_rebate_end': rec.get('instant_rebate_end', None),
             'package': rec.get('package', None),
         }
 
@@ -193,3 +186,40 @@ class ProductProductImportMapper(Component):
                     msg = ' '.join((str(i), image_url, str(err)))
 
                 _logger.warning(msg=msg)
+
+    @mapping
+    def weight(self, rec):
+        return {
+            'weight': float(rec.get('weight', 0)) * 0.45359237 / (int(rec.get('unit', 1)) if int(rec.get('unit')) else 1)
+        }
+
+    @mapping
+    def volume(self, rec):
+        length_cm = float(rec.get('length', 0)) * 2.54
+        width_cm = float(rec.get('width', 0)) * 2.54
+        height_cm = float(rec.get('height', 0)) * 2.54
+        return {
+            'length_cm': length_cm,
+            'width_cm': width_cm,
+            'height_cm': height_cm,
+            'volume': length_cm * width_cm * height_cm / (100 ** 3)
+        }
+
+    @mapping
+    def rebate(self, rec):
+        return {
+            'instant_rebate': float(rec.get('instant_rebate', 0)) * RATE if rec.get('instant_rebate') != '' else 0,
+            'instant_rebate_start': rec.get('instant_rebate_start', None),
+            'instant_rebate_end': rec.get('instant_rebate_end', None),
+        }
+
+    @mapping
+    def tracking(self, rec):
+        return {'tracking': 'serial'}
+
+    @mapping
+    def tax(self, rec):
+        return {
+            'taxes_id': [(6, False, self.env.ref('l10n_ca.1_gst_sale_en').ids)],
+            'supplier_taxes_id': [(5, False, False)]
+        }
