@@ -6,4 +6,5 @@
     'depends': [
         'stock',
     ],
+    'version': '1.1',
 }
