@@ -213,8 +213,10 @@
               <field name="ups_account" string="UPS Account #" />
               <field name="fedex_account" string="FedEx Account #" />
             </group>
-            <group name="studio_group_whUnJ_right" />
           </group>
+        </xpath>
+        <xpath position="after" expr="//field[@name='payment_term_id']">
+          <field name="customer_po" string="Customer PO #"/>
         </xpath>
       </data>
     </field>

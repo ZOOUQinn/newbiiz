@@ -1,6 +1,6 @@
 {
     'name': 'Sale Malabs',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Extra Tools',
     'description': '',
     'author': 'ZOOU Qinn <qinn.zou@newbiiz.com>',
