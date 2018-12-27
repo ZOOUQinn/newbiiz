@@ -11,6 +11,7 @@
         'data/global.xml',
         'views/view.xml',
         'views/view_from_studio.xml',
+        'views/report_invoice.xml',
     ],
     'website': "http://www.newbiiz.com",
 }
