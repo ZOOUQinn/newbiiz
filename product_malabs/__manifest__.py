@@ -1,7 +1,7 @@
 {
     'name': 'Products Malabs',
-    'version': '1.0',
-    'category': 'Sales',
+    'version': '1.1',
+    'category': 'Products',
     'depends': ['product', 'sale_stock',],
     'data': [
         'data/company.xml',
