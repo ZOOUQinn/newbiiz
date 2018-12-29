@@ -7,4 +7,5 @@
     'depends': [
         'purchase',
     ],
+    'version': '1.1',
 }
