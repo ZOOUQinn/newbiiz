@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_edi_document_newbiiz,access_edi_document_newbiiz,model_edi_document,base.group_system,1,1,1,1
-access_edi_document_type_newbiiz,access_edi_document_type_newbiiz,edi.model_edi_document_type,base.group_system,1,1,1,1
-access__edi_product_malabscad_record,access__edi_product_malabscad_record,model_edi_product_malabscad_record,base.group_system,1,1,1,1
-access_edi_attachment_audit_newbiiz,access_edi_attachment_audit_newbiiz,edi.model_edi_attachment_audit,base.group_system,1,1,1,1
