@@ -16,7 +16,6 @@ class Res_Partner(models.Model):
     job_position = fields.Char(string='Job Position')
     fax = fields.Char(string='Fax')
     sales_note = fields.Char(string='Sales Note')
-    supplier_currency = fields.Char(string='Supplier Currency')
     rma_note = fields.Char(string='RMA Note')
     credit_note = fields.Char(string='Credit Note')
     acct_note = fields.Char(string='Acct Note')
