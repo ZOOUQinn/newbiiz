@@ -96,25 +96,67 @@ class ProductProductImporter(Component):
 
     def _after_import(self, binding):
 
-        # Price List
+        # Public Price List USD
+        records_0 = self.env['product.pricelist.item'].search((
+            ('product_tmpl_id', '=', binding.product_tmpl_id.id),
+            ('pricelist_id', '=', self.env.ref('product_malabs.public_usd').id),
+            ('compute_price', '=', 'fixed')
+        ))
+        data = {
+            'applied_on': '1_product',
+            'compute_price': 'fixed',
+            'fixed_price': binding.usd_sales_price,
+            'pricelist_id': self.env.ref('product_malabs.public_usd').id,
+            'product_tmpl_id': binding.product_tmpl_id.id,
+        }
+        if records_0:
+            for rec in records_0:
+                rec.write(data)
+        else:
+            self.env['product.pricelist.item'].create(data)
+
         now = datetime.now()
         start = fields.Datetime().from_string(binding.instant_rebate_start)
         end = fields.Datetime().from_string(binding.instant_rebate_end)
         if binding.instant_rebate and float(binding.instant_rebate) and start < now and now < end:
-            records = self.env['product.pricelist.item'].search((
-                ('product_tmpl_id', '=', binding.product_tmpl_id.id),
-                ('pricelist_id', '=', self.env.ref('product_malabs.regular_rebate').id)
-            ))
-            data = {
-                'applied_on': '1_product',
+            data.update({
                 'date_start': binding.instant_rebate_start,
                 'date_end': binding.instant_rebate_end,
-                'compute_price': 'fixed',
-                'fixed_price': binding.list_price + float(binding.instant_rebate),
-                'pricelist_id': self.env.ref('product_malabs.regular_rebate').id
-            }
-            if records:
-                for rec in records:
+                'compute_price': 'formula',
+                'price_surcharge': binding.instant_rebate,
+            })
+
+            # USD
+            records_1 = self.env['product.pricelist.item'].search((
+                ('product_tmpl_id', '=', binding.product_tmpl_id.id),
+                ('pricelist_id', '=', self.env.ref('product_malabs.regular_rebate_usd').id),
+                ('compute_price', '=', 'formula'),
+            ))
+            data.update({
+                'pricelist_id': self.env.ref('product_malabs.regular_rebate_usd').id,
+                'base': 'pricelist',
+                'base_pricelist_id': self.env.ref('product_malabs.public_usd').id
+            })
+
+            if records_1:
+                for rec in records_1:
+                    rec.write(data)
+            else:
+                self.env['product.pricelist.item'].create(data)
+
+            # CAD
+            records_2 = self.env['product.pricelist.item'].search((
+                ('product_tmpl_id', '=', binding.product_tmpl_id.id),
+                ('pricelist_id', '=', self.env.ref('product.list0').id)
+            ))
+            data.update({
+                'pricelist_id': self.env.ref('product.list0').id,
+                'price_surcharge': binding.instant_rebate * RATE,
+            })
+            del data['base']
+            del data['base_pricelist_id']
+            if records_2:
+                for rec in records_2:
                     rec.write(data)
             else:
                 data.update({'product_tmpl_id': binding.product_tmpl_id.id})
@@ -159,8 +201,6 @@ class ProductProductImportMapper(Component):
     @mapping
     def price(self, record):
         return {
-            'currency_rate': RATE,
-            'currency_rate_date': RATE_TIME,
             'usd_sales_price': record.get('price', 0.0),
             'usd_cost': record.get('cost', 0.0),
             'list_price': float(record.get('price', 0.0)) * RATE,
@@ -233,7 +273,7 @@ class ProductProductImportMapper(Component):
     @mapping
     def rebate(self, rec):
         return {
-            'instant_rebate': float(rec.get('instant_rebate', 0)) * RATE if rec.get('instant_rebate') != '' else 0,
+            'instant_rebate': float(rec.get('instant_rebate', 0)) if rec.get('instant_rebate') != '' else 0,
             'instant_rebate_start': rec.get('instant_rebate_start', None),
             'instant_rebate_end': rec.get('instant_rebate_end', None),
         }

@@ -1,5 +1,12 @@
- <odoo>
-   <record id="regular_rebate" model="product.pricelist">
-     <field name="name">Regular Rebate Pricelist</field>
-   </record>
- </odoo>
+<odoo>
+  <record id="public_usd" model="product.pricelist">
+    <field name="name">Public Pricelist USD</field>
+    <field name="currency_id" ref="base.USD"/>
+    <field name="item_ids" eval="[(5, False, False)]"/>
+  </record>
+  <record id="regular_rebate_usd" model="product.pricelist">
+    <field name="name">Regular Rebate Pricelist - USD</field>
+    <field name="currency_id" ref="base.USD"/>
+    <field name="item_ids" eval="[(5, False, False)]"/>
+  </record>
+</odoo>
