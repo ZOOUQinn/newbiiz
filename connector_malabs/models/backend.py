@@ -26,6 +26,10 @@ from odoo import models, api, fields, _
 
 _logger = logging.getLogger(__name__)
 
+CODE = '''
+model.import_products_cron(%s)
+'''
+
 class mccsv_backend(models.Model):
     _name = 'mccsv.backend'
     _inherit = 'connector.backend'
@@ -78,14 +82,11 @@ class mccsv_backend(models.Model):
             'csv_file': f.data,
         }).id
         if launch:
-            code = '''
-model.import_products_cron(%s)
-            ''' % backend_id
             self.env['ir.cron'].create({
                 'name': 'Import Product from %s' % (name),
                 'model_id': self.env.ref('connector_malabs.model_mccsv_backend').id,
                 'state': 'code',
-                'code': code,
+                'code': CODE % backend_id,
                 'interval_number': 1,
                 'interval_type': 'hours',
                 'numbercall': 1,
