@@ -204,9 +204,9 @@
         <xpath expr="//field[@name='fiscal_position_id']" position="after">
           <field name="credit_note" string="Credit Note" />
         </xpath>
-        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/group[1]" position="after">
-          <group name="studio_group_whUnJ">
-            <group name="studio_group_whUnJ_left" string="Shipping Account">
+        <xpath expr="//page[@name='other_information']" position="inside">
+          <group>
+            <group  string="Shipping Account">
               <field name="ups_account" string="UPS Account #" />
               <field name="fedex_account" string="FedEx Account #" />
             </group>

@@ -18,7 +18,9 @@
           <field name="product_item"/>
           <field name="product_list"/>
         </xpath>
-        <xpath expr="//tree/field[@name='name']" position="replace"/>
+        <xpath expr="//tree/field[@name='name']" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </xpath>
         <xpath expr="//tree/field[@name='purchase_price']" position="attributes">
           <attribute name="groups">purchase.group_purchase_user</attribute>
         </xpath>

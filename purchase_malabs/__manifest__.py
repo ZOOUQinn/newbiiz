@@ -5,7 +5,7 @@
         'views/templates.xml'
     ],
     'depends': [
-        'purchase',
+        'purchase_stock',
     ],
     'version': '1.1',
 }
