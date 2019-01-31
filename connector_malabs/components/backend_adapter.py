@@ -21,11 +21,8 @@
 import base64
 import csv
 import logging
-from datetime import timedelta
 
 from odoo.addons.component.core import AbstractComponent
-
-from odoo import fields
 
 try:
     from xmlrpc import client as xmlrpclib

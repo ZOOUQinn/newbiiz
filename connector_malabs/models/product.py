@@ -204,7 +204,8 @@ class ProductProductImportMapper(Component):
             'usd_sales_price': record.get('price', 0.0),
             'usd_cost': record.get('cost', 0.0),
             'list_price': float(record.get('price', 0.0)) * RATE,
-            'standard_price': float(record.get('cost', 0.0)) * RATE,
+            'currency_rate': RATE,
+            'currency_rate_date': RATE_TIME,
         }
 
     @mapping
@@ -226,6 +227,7 @@ class ProductProductImportMapper(Component):
             'manufacturer': rec.get('manufacturer', None),
             'unit': rec.get('unit', None),
             'package': rec.get('package', None),
+            'default_code': rec.get('mfr_part'),
         }
 
         if rec.get('barcode', None) and rec['barcode'] != '':

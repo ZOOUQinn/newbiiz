@@ -14,6 +14,8 @@ class Product_Template(models.Model):
     instant_rebate = fields.Float(string='Instant Rebate')
     instant_rebate_start = fields.Char(string='Instant Rebate Start')
     instant_rebate_end = fields.Char(string='Instant Rebate End')
+    currency_rate = fields.Char(string='Currency Rate')
+    currency_rate_date = fields.Char(string='Currency Rate Date')
     usd_sales_price = fields.Float(string='USD - Sales Price')
     usd_cost = fields.Float(string='USD - Cost')
     width_cm = fields.Char(string='Width (cm)')
