@@ -225,4 +225,101 @@
       </div>
     </t>
   </template>
+
+
+  <report id="account_invoices_malabs"
+          model="account.invoice"
+          string="Invoices customized"
+          report_type="qweb-pdf"
+          name="sale_malabs.report_invoice_customized"
+  />
+
+  <template id="report_invoice_customized">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
+        <t t-call="sale_malabs.report_invoice_document_customized" t-lang="o.partner_id.lang"/>
+      </t>
+    </t>
+  </template>
+
+  <template id="report_invoice_document_customized" inherit_id="account.report_invoice_document" primary="True">
+
+    <xpath expr="//div[@groups='sale.group_delivery_invoice_address']/div[@t-field='o.partner_id']" position="attributes">
+      <attribute name="t-options">{"widget": "contact", "fields": ["address", "name", "email"], "no_marker": True}</attribute>
+    </xpath>
+
+    <xpath expr="//div[@name='reference']" position="after">
+      <div class="col-xs-2" t-if="o.origin">
+        <strong>Term</strong>
+        <p t-field="o.payment_term_id.name"/>
+      </div>
+      <div class="col-xs-2" t-if="o.origin">
+        <strong>Sales ID</strong>
+        <p t-field="o.user_id.name"/>
+      </div>
+      <div class="col-xs-2" t-if="o.origin">
+        <strong>Currency</strong>
+        <p t-field="o.currency_id.name"/>
+      </div>
+    </xpath>
+
+    <xpath expr="//t/table" position="replace">
+
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="text-right">Item List</th>
+            <th class="text-right">Manufacturer ID</th>
+            <th class="text-right">Quantity</th>
+            <th class="text-right">Unit Price</th>
+            <th t-if="display_discount" class="text-right">Disc.(%)</th>
+            <th class="text-right">Taxes</th>
+            <th class="text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="invoice_tbody">
+          <tr t-foreach="o.invoice_line_ids" t-as="l">
+            <td>
+              <span t-esc="l.product_id.name[:24]"/>
+            </td>
+            <td class="text-right">
+              <span t-field="l.product_id.ma_labs_list"/>
+            </td>
+            <td class="text-right">
+              <span t-field="l.product_id.manufacturer"/>
+            </td>
+            <td class="text-right">
+              <span t-esc="int(float(l.quantity))"/>
+              <span t-field="l.uom_id" groups="product.group_uom"/>
+            </td>
+            <td class="text-right">
+              <span t-field="l.price_unit"/>
+            </td>
+            <td t-if="display_discount" class="text-right">
+              <span t-field="l.discount"/>
+            </td>
+            <td class="text-right">
+              <span t-esc="', '.join(map(lambda x: (x.description or x.name), l.invoice_line_tax_ids))"/>
+            </td>
+            <td class="text-right" id="subtotal">
+              <span t-field="l.price_subtotal"
+                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+            </td>
+          </tr>
+          <tr t-foreach="range(max(5-len(o.invoice_line_ids),0))" t-as="l">
+            <td t-translation="off">&amp;nbsp;</td>
+            <td class="hidden"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td t-if="display_discount"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </xpath>
+  </template>
 </odoo>
