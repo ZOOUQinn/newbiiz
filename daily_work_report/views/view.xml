@@ -1,0 +1,53 @@
+<odoo>
+
+  <record model="ir.ui.view" id="daily_report_tree">
+    <field name="name">daily.report.tree</field>
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="create_uid"/>
+        <field name="keywords"/>
+        <field name="state"/>
+        <field name="write_date_display"/>
+      </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="daily_report_form">
+    <field name="name">daily.report.form</field>
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button string="Submit" name="submit" type="object"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="keywords"/>
+            <field name="content"/>
+          </group>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers"/>
+          <field name="activity_ids" widget="mail_activity"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="action_project_daily_report">
+    <field name="name">Daily Report</field>
+    <field name="res_model">daily.report</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_project_daily_report"
+            name="Daily Report"
+            groups="project.group_project_user"
+            action="daily_work_report.action_project_daily_report"
+            parent="project.menu_project_management"
+            sequence="15"/>
+
+</odoo>
