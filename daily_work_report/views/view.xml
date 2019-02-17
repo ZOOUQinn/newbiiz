@@ -4,7 +4,7 @@
     <field name="name">daily.report.tree</field>
     <field name="model">daily.report</field>
     <field name="arch" type="xml">
-      <tree>
+      <tree decoration-info="state=='submitted'">
         <field name="create_uid"/>
         <field name="keywords"/>
         <field name="state"/>
@@ -19,13 +19,13 @@
     <field name="arch" type="xml">
       <form>
         <header>
-          <button string="Submit" name="submit" type="object"/>
+          <button string="Submit" name="submit" type="object" states="saved"/>
           <field name="state" widget="statusbar"/>
         </header>
         <sheet>
           <group>
-            <field name="keywords"/>
-            <field name="content"/>
+            <field name="keywords" attrs="{'readonly':[('state','in',['submitted'])]}"/>
+            <field name="content" attrs="{'readonly':[('state','in',['submitted'])]}"/>
           </group>
         </sheet>
         <div class="oe_chatter">
@@ -37,9 +37,19 @@
     </field>
   </record>
 
+  <record id="daily_report_search" model="ir.ui.view">
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <search>
+        <filter name="my_reports" string="My Reports" domain="[('user_id','=',uid)]"/>
+      </search>
+    </field>
+  </record>
+
   <record model="ir.actions.act_window" id="action_project_daily_report">
     <field name="name">Daily Report</field>
     <field name="res_model">daily.report</field>
+    <field name="context">{'search_default_my_reports': 1}</field>
     <field name="view_mode">tree,form</field>
   </record>
 

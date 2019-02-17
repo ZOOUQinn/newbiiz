@@ -6,7 +6,10 @@ class DailyReport(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'title'
 
-
+    user_id = fields.Many2one(comodel_name='res.users',
+                              string='Submitter',
+                              default=lambda self: self.env.uid,
+                              index=True, track_visibility='always')
     title = fields.Char(compute='_compute_title')
     write_date_display = fields.Char(string='Write Date', compute='_compute_write_date')
     state = fields.Selection(string="State", selection=[
@@ -37,15 +40,17 @@ class DailyReport(models.Model):
         }
 
         for r in self:
-            r.write_date_display = r.write_date.isoformat(' ')[:10] + ' ' + WEEK.get(r.write_date.weekday())
+            r.write_date_display = r.write_date.isoformat(' ')[:11] + WEEK.get(r.write_date.weekday())
 
     @api.multi
     def submit(self):
         for rec in self:
             rec.state = 'submitted'
+        return True
 
     @api.multi
     def write(self, vals):
-        vals.update({'state': 'saved'})
+        if vals.get('state') == 'draft':
+            vals.update({'state': 'saved'})
         super(DailyReport, self).write(vals)
         return True
