@@ -43,11 +43,12 @@
     <field name="view_mode">tree,form</field>
   </record>
 
-  <menuitem id="menu_project_daily_report"
-            name="Daily Report"
-            groups="project.group_project_user"
-            action="daily_work_report.action_project_daily_report"
-            parent="project.menu_project_management"
-            sequence="15"/>
+  <menuitem name="Tasks" id="menu_project_task" parent="project.menu_main_pm"
+            sequence="2" groups="base.group_no_one,project.group_project_user"/>
 
+  <menuitem name="All Tasks" id="project.menu_project_management" parent="menu_project_task"
+            action="project.action_view_task" sequence="2" groups="base.group_no_one,project.group_project_user"/>
+
+  <menuitem id="menu_project_daily_report" name="Daily Report" groups="project.group_project_user"
+            action="action_project_daily_report" parent="menu_project_task" sequence="15"/>
 </odoo>
