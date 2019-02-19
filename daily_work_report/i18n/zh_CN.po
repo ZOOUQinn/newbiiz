@@ -1,0 +1,371 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* daily_work_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-19 06:59+0000\n"
+"PO-Revision-Date: 2019-02-19 06:59+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: daily_work_report
+#: model_terms:ir.ui.view,arch_db:daily_work_report.daily_report_form_wizard
+msgid "Are You SURE to Submit This Daily Report?"
+msgstr "确认提交此工作日报？"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:49
+#, python-format
+msgid "Can't Delete Submitted report"
+msgstr "不可删除已提交报告"
+
+#. module: daily_work_report
+#: model_terms:ir.ui.view,arch_db:daily_work_report.daily_report_form_wizard
+msgid "Cancel"
+msgstr "取消"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__content
+msgid "Content"
+msgstr "内容"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__create_date_display
+msgid "Create Date"
+msgstr "日期"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__create_uid
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report_wizard__create_uid
+msgid "Created by"
+msgstr "提交人"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__create_date
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.actions.act_window,name:daily_work_report.action_project_daily_report
+#: model:ir.ui.menu,name:daily_work_report.menu_project_daily_report
+msgid "Daily Report"
+msgstr "每日工作报告"
+
+#. module: daily_work_report
+#: model:ir.actions.act_window,name:daily_work_report.action_window_daily_report_wizard
+msgid "Daily Report Wizard"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__display_name
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: daily_work_report
+#: selection:daily.report,state:0
+msgid "Draft"
+msgstr "草稿"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:38
+#, python-format
+msgid "Friday"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__id
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__message_unread
+msgid "If checked new messages require your attention."
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__keywords
+msgid "Keywords"
+msgstr "关键字"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report____last_update
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__write_uid
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__write_date
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:34
+#, python-format
+msgid "Monday"
+msgstr ""
+
+#. module: daily_work_report
+#: model_terms:ir.ui.view,arch_db:daily_work_report.daily_report_search
+msgid "My Reports"
+msgstr "我的工作报告"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_has_error_counter
+msgid "Number of error"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/wizard/wizard.py:22
+#, python-format
+msgid "Only ONE report for each day."
+msgstr "每天仅需提交一份工作日报。"
+
+#. module: daily_work_report
+#: selection:daily.report,activity_state:0
+msgid "Overdue"
+msgstr ""
+
+#. module: daily_work_report
+#: selection:daily.report,activity_state:0
+msgid "Planned"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/wizard/wizard.py:15
+#, python-format
+msgid "Please submit your own report."
+msgstr "请提交本人工作报告"
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:27
+#, python-format
+msgid "Report on"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:39
+#, python-format
+msgid "Saturday"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__state
+msgid "State"
+msgstr "状态"
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__activity_state
+msgid "Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: daily_work_report
+#: model_terms:ir.ui.view,arch_db:daily_work_report.daily_report_form
+#: model_terms:ir.ui.view,arch_db:daily_work_report.daily_report_form_wizard
+msgid "Submit"
+msgstr "提交"
+
+#. module: daily_work_report
+#: selection:daily.report,state:0
+#: model_terms:ir.ui.view,arch_db:daily_work_report.daily_report_search
+msgid "Submitted"
+msgstr "已提交"
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__user_id
+msgid "Submitter"
+msgstr "提交人"
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:40
+#, python-format
+msgid "Sunday"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.ui.menu,name:daily_work_report.menu_project_task
+msgid "Tasks"
+msgstr "任务"
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:37
+#, python-format
+msgid "Thursday"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__title
+msgid "Title"
+msgstr ""
+
+#. module: daily_work_report
+#: selection:daily.report,activity_state:0
+msgid "Today"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:35
+#, python-format
+msgid "Tuesday"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model.fields,help:daily_work_report.field_daily_report__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:36
+#, python-format
+msgid "Wednesday"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model,name:daily_work_report.model_daily_report
+msgid "daily.report"
+msgstr ""
+
+#. module: daily_work_report
+#: model:ir.model,name:daily_work_report.model_daily_report_wizard
+msgid "daily.report_wizard"
+msgstr ""
+
