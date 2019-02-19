@@ -8,7 +8,7 @@
         <field name="create_uid"/>
         <field name="keywords"/>
         <field name="state"/>
-        <field name="write_date_display"/>
+        <field name="create_date_display"/>
       </tree>
     </field>
   </record>
@@ -19,7 +19,7 @@
     <field name="arch" type="xml">
       <form>
         <header>
-          <button string="Submit" name="submit" type="object" states="saved"/>
+          <button string="Submit" name="daily_work_report.action_window_daily_report_wizard" type="action" states="draft"/>
           <field name="state" widget="statusbar"/>
         </header>
         <sheet>
@@ -42,6 +42,7 @@
     <field name="arch" type="xml">
       <search>
         <filter name="my_reports" string="My Reports" domain="[('user_id','=',uid)]"/>
+        <filter name="submitted" string="Submitted" domain="[('state','=','submitted')]"/>
       </search>
     </field>
   </record>

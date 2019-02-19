@@ -5,5 +5,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/view.xml',
+        'views/wizard.xml',
     ],
 }

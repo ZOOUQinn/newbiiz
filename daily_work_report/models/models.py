@@ -1,4 +1,6 @@
-from odoo import models, fields, api, _
+import datetime
+
+from odoo import models, fields, api, _, exceptions
 
 
 class DailyReport(models.Model):
@@ -11,10 +13,9 @@ class DailyReport(models.Model):
                               default=lambda self: self.env.uid,
                               index=True, track_visibility='always')
     title = fields.Char(compute='_compute_title')
-    write_date_display = fields.Char(string='Write Date', compute='_compute_write_date')
+    create_date_display = fields.Char(string='Create Date', compute='_compute_create_date')
     state = fields.Selection(string="State", selection=[
         ('draft', 'Draft'),
-        ('saved', 'Saved'),
         ('submitted', 'Submitted'),
     ], default='draft')
     keywords = fields.Char(string='Keywords')
@@ -24,11 +25,11 @@ class DailyReport(models.Model):
         for r in self:
             r.title = '%s %s' % (
                 _('Report on'),
-                r.write_date_display,
+                r.create_date_display,
             )
 
-    @api.depends('write_date')
-    def _compute_write_date(self):
+    @api.depends('create_date')
+    def _compute_create_date(self):
         WEEK = {
             0: _('Monday'),
             1: _('Tuesday'),
@@ -40,17 +41,11 @@ class DailyReport(models.Model):
         }
 
         for r in self:
-            r.write_date_display = r.write_date.isoformat(' ')[:11] + WEEK.get(r.write_date.weekday())
+            r.create_date_display = r.create_date.isoformat(' ')[:11] + WEEK.get(r.create_date.weekday())
 
     @api.multi
-    def submit(self):
-        for rec in self:
-            rec.state = 'submitted'
-        return True
-
-    @api.multi
-    def write(self, vals):
-        if vals.get('state') == 'draft':
-            vals.update({'state': 'saved'})
-        super(DailyReport, self).write(vals)
-        return True
+    def unlink(self):
+        if self.state == 'submitted':
+            raise exceptions.Warning(_('Can\'t Delete Submitted report'))
+        else:
+            return super(DailyReport, self).unlink()

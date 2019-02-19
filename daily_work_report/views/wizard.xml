@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+
+    <record model="ir.actions.act_window" id="action_window_daily_report_wizard">
+      <field name="name">Daily Report Wizard</field>
+      <field name="res_model">daily.report_wizard</field>
+      <field name="target">new</field>
+      <field name="src_model">daily.report</field>
+      <field name="view_mode">form</field>
+      <field name="special">cancel</field>
+    </record>
+
+    <record model="ir.ui.view" id="daily_report_form_wizard">
+      <field name="name">daily.report.form.wizard</field>
+      <field name="model">daily.report_wizard</field>
+      <field name="arch" type="xml">
+        <form>
+          <p>Are You SURE to Submit This Daily Report?</p>
+          <footer>
+            <button name="submit" type="object" string="Submit"/>
+            <button special="cancel" string="Cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>
