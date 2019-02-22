@@ -7,6 +7,7 @@ class DailyReport(models.Model):
     _name = 'daily.report'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'title'
+    _order = 'create_date desc'
 
     user_id = fields.Many2one(comodel_name='res.users',
                               string='Submitter',
@@ -41,7 +42,7 @@ class DailyReport(models.Model):
         }
 
         for r in self:
-            r.create_date_display = r.create_date.isoformat(' ')[:11] + WEEK.get(r.create_date.weekday())
+            r.create_date_display = r.create_date.isoformat(' ')[:11] + 'Daily Report ' + WEEK.get(r.create_date.weekday())
 
     @api.multi
     def unlink(self):

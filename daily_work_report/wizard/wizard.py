@@ -5,6 +5,7 @@ from odoo import models, api, fields, exceptions, _
 
 class Diary_Wizard(models.TransientModel):
     _name = 'daily.report_wizard'
+    _description = 'Report Wizard'
 
     @api.multi
     def submit(self):

@@ -6,9 +6,9 @@
     <field name="arch" type="xml">
       <tree decoration-info="state=='submitted'">
         <field name="create_uid"/>
+        <field name="create_date_display"/>
         <field name="keywords"/>
         <field name="state"/>
-        <field name="create_date_display"/>
       </tree>
     </field>
   </record>
