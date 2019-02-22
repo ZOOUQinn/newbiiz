@@ -20,6 +20,7 @@ class DailyReport(models.Model):
         ('submitted', 'Submitted'),
     ], default='draft')
     keywords = fields.Char(string='Keywords')
+    working_hours = fields.Integer(string='Working hours', default=8)
     content = fields.Html(string='Content')
 
     def _compute_title(self):
@@ -42,7 +43,7 @@ class DailyReport(models.Model):
         }
 
         for r in self:
-            r.create_date_display = r.create_date.isoformat(' ')[:11] + 'Daily Report ' + WEEK.get(r.create_date.weekday())
+            r.create_date_display = r.create_date.isoformat(' ')[:11] + _('Daily Report') + ' ' + WEEK.get(r.create_date.weekday())
 
     @api.multi
     def unlink(self):

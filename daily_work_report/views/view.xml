@@ -24,7 +24,12 @@
         </header>
         <sheet>
           <group>
-            <field name="keywords" attrs="{'readonly':[('state','in',['submitted'])]}"/>
+            <group>
+              <field name="keywords" attrs="{'readonly':[('state','in',['submitted'])]}"/>
+            </group>
+            <group>
+              <field name="working_hours" attrs="{'readonly':[('state','in',['submitted'])]}"/>
+            </group>
             <field name="content" attrs="{'readonly':[('state','in',['submitted'])]}"/>
           </group>
         </sheet>

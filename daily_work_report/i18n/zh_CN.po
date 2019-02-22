@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-19 06:59+0000\n"
-"PO-Revision-Date: 2019-02-19 06:59+0000\n"
+"POT-Creation-Date: 2019-02-22 05:06+0000\n"
+"PO-Revision-Date: 2019-02-22 05:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:49
+#: code:addons/daily_work_report/models/models.py:51
 #, python-format
 msgid "Can't Delete Submitted report"
 msgstr "不可删除已提交报告"
@@ -74,8 +74,10 @@ msgid "Created on"
 msgstr ""
 
 #. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:46
 #: model:ir.actions.act_window,name:daily_work_report.action_project_daily_report
 #: model:ir.ui.menu,name:daily_work_report.menu_project_daily_report
+#, python-format
 msgid "Daily Report"
 msgstr "每日工作报告"
 
@@ -111,7 +113,7 @@ msgid "Followers (Partners)"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:38
+#: code:addons/daily_work_report/models/models.py:40
 #, python-format
 msgid "Friday"
 msgstr ""
@@ -181,7 +183,7 @@ msgid "Messages"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:34
+#: code:addons/daily_work_report/models/models.py:36
 #, python-format
 msgid "Monday"
 msgstr ""
@@ -232,7 +234,7 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/wizard/wizard.py:22
+#: code:addons/daily_work_report/wizard/wizard.py:23
 #, python-format
 msgid "Only ONE report for each day."
 msgstr "每天仅需提交一份工作日报。"
@@ -248,13 +250,18 @@ msgid "Planned"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/wizard/wizard.py:15
+#: code:addons/daily_work_report/wizard/wizard.py:16
 #, python-format
 msgid "Please submit your own report."
-msgstr "请提交本人工作报告"
+msgstr "仅允许提交本人工作报告"
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:27
+#: model:ir.model,name:daily_work_report.model_daily_report_wizard
+msgid "Report Wizard"
+msgstr ""
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:29
 #, python-format
 msgid "Report on"
 msgstr ""
@@ -265,7 +272,7 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:39
+#: code:addons/daily_work_report/models/models.py:41
 #, python-format
 msgid "Saturday"
 msgstr ""
@@ -301,7 +308,7 @@ msgid "Submitter"
 msgstr "提交人"
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:40
+#: code:addons/daily_work_report/models/models.py:42
 #, python-format
 msgid "Sunday"
 msgstr ""
@@ -312,7 +319,7 @@ msgid "Tasks"
 msgstr "任务"
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:37
+#: code:addons/daily_work_report/models/models.py:39
 #, python-format
 msgid "Thursday"
 msgstr ""
@@ -328,7 +335,7 @@ msgid "Today"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:35
+#: code:addons/daily_work_report/models/models.py:37
 #, python-format
 msgid "Tuesday"
 msgstr ""
@@ -354,18 +361,18 @@ msgid "Website communication history"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:36
+#: code:addons/daily_work_report/models/models.py:38
 #, python-format
 msgid "Wednesday"
 msgstr ""
 
 #. module: daily_work_report
-#: model:ir.model,name:daily_work_report.model_daily_report
-msgid "daily.report"
-msgstr ""
+#: model:ir.model.fields,field_description:daily_work_report.field_daily_report__working_hours
+msgid "Working hours"
+msgstr "工作时长（小时）"
 
 #. module: daily_work_report
-#: model:ir.model,name:daily_work_report.model_daily_report_wizard
-msgid "daily.report_wizard"
+#: model:ir.model,name:daily_work_report.model_daily_report
+msgid "daily.report"
 msgstr ""
 
