@@ -1,6 +1,6 @@
 {
     'name': 'Products Malabs',
-    'version': '1.2',
+    'version': '1.3',
     'category': 'Products',
     'depends': [
         'product',
