@@ -5,6 +5,17 @@ from odoo.exceptions import UserError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    credit_note = fields.Text(string='Credit Note')
+    re_sell_certificate = fields.Char(string='Re-sell Certificate')
+    ups_account = fields.Char(string='UPS Account #')
+    fedex_account = fields.Char(string='FedEx Account #')
+    delivery_confirmation_option = fields.Selection(string='Delivery Confirmation Option', selection=[['y', 'Y'], ['n', 'N']])
+    delivery_confirmation_signature_required = fields.Selection(string='Delivery Confirmation Signature Required', selection=[['y', 'Y'], ['n', 'N']])
+    declared_value_option = fields.Selection(string='Declared Value Option', selection=[['y', 'Y'], ['n', 'N']])
+    declared_value_amount = fields.Char(string='Declared Value Amount')
+    blind_shipment = fields.Selection(string='Blind Shipment', selection=[['y', 'Y'], ['n', 'N']])
+    customer_po = fields.Char(string="Customer PO #")
+
     @api.model
     def _credit_limit(self):
         self.ensure_one()
@@ -40,6 +51,15 @@ class SaleOrder(models.Model):
                 order.update({
                     'amount_total': order.amount_total * total_rate,
                 })
+
+    @api.model
+    def create(self, vals):
+        rec = super(SaleOrder, self).create(vals)
+        for order_line in rec.order_line:
+            users = order_line.product_id.manufacturer.liaison
+            if users:
+                rec.message_subscribe_users(user_ids=users.ids)
+        return rec
 
 
 class SaleOrderLine(models.Model):

@@ -1,1 +1,1 @@
-from . import models_from_studio
+from . import models

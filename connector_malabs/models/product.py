@@ -83,15 +83,22 @@ class ProductProductImporter(Component):
     _apply_on = ['malabs.product.product']
 
     def _import_dependencies(self):
-        """ Import the dependencies for the record"""
         record = self.malabs_record
+
+        """ Import the dependencies for the record"""
         categ_name = record.get('category', None)
         categ_ids = self.env['product.category'].search([('name', '=', categ_name)])
-        if categ_ids:
-            return
-        if categ_name:
+        if len(categ_ids) == 0 and categ_name:
             self.env['product.category'].create({
                 'name': categ_name
+            })
+
+        """ Import the manufacturer for the record"""
+        manufacturer_name = record.get('manufacturer', None)
+        manufacturer_ids = self.env['product.manufacturer'].search([('name', '=', manufacturer_name)])
+        if len(manufacturer_ids) == 0 and manufacturer_name:
+            self.env['product.manufacturer'].create({
+                'name': manufacturer_name
             })
 
     def _after_import(self, binding):
@@ -224,7 +231,6 @@ class ProductProductImportMapper(Component):
             'ma_labs_list': rec.get('ma_labs_list', None),
             'item': rec.get('item', None),
             'mfr_part': rec.get('mfr_part', None),
-            'manufacturer': rec.get('manufacturer', None),
             'unit': rec.get('unit', None),
             'package': rec.get('package', None),
             'default_code': rec.get('mfr_part'),
@@ -281,12 +287,13 @@ class ProductProductImportMapper(Component):
         }
 
     @mapping
-    def tracking(self, rec):
-        return {'tracking': 'serial'}
-
-    @mapping
     def tax(self, rec):
         return {
             'taxes_id': [(6, False, self.env.ref('l10n_ca.1_gst_sale_en').ids)],
             'supplier_taxes_id': [(5, False, False)]
         }
+
+    @mapping
+    def manufacturer(self, rec):
+        manufacturer = self.env['product.manufacturer'].search([('name', '=', rec.get('manufacturer', None)), ]).ids[0]
+        return {'manufacturer': manufacturer}

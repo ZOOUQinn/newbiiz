@@ -113,18 +113,3 @@ class Res_Partner(models.Model):
     ups_account = fields.Char(string='UPS Account #')
     fedex_account = fields.Char(string='FedEx Account #')
     contact_name = fields.Char(string='Contact Name')
-
-
-class Sale_Order(models.Model):
-    _inherit = 'sale.order'
-
-    credit_note = fields.Text(string='Credit Note')
-    re_sell_certificate = fields.Char(string='Re-sell Certificate')
-    ups_account = fields.Char(string='UPS Account #')
-    fedex_account = fields.Char(string='FedEx Account #')
-    delivery_confirmation_option = fields.Selection(string='Delivery Confirmation Option', selection=[['y', 'Y'], ['n', 'N']])
-    delivery_confirmation_signature_required = fields.Selection(string='Delivery Confirmation Signature Required', selection=[['y', 'Y'], ['n', 'N']])
-    declared_value_option = fields.Selection(string='Declared Value Option', selection=[['y', 'Y'], ['n', 'N']])
-    declared_value_amount = fields.Char(string='Declared Value Amount')
-    blind_shipment = fields.Selection(string='Blind Shipment', selection=[['y', 'Y'], ['n', 'N']])
-    customer_po = fields.Char(string="Customer PO #")

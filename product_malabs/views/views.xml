@@ -39,4 +39,12 @@
     <field name="name">newbiiz.product.template.only.form.view</field>
     <field name="type">form</field>
   </record>
+
+  <record model="ir.actions.act_window" id="action_product_manufacturer">
+    <field name="name">Manufacturer</field>
+    <field name="res_model">product.manufacturer</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+  <menuitem id="menu_product_manufacturer" name="Manufacturer" parent="stock.menu_stock_inventory_control"
+            action="action_product_manufacturer" sequence="102"/>
 </odoo>

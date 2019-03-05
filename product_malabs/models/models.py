@@ -7,7 +7,7 @@ class Product_Template(models.Model):
     ma_labs_list = fields.Char(string='Ma Labs List #')
     item = fields.Char(string='Item #')
     mfr_part = fields.Char(string='Mfr Part #')
-    manufacturer = fields.Char(string='Manufacturer')
+    manufacturer = fields.Many2one(comodel_name='product.manufacturer', string='Manufacturer')
     package = fields.Char(string='Package')
     unit = fields.Char(string='Unit')
     website_description = fields.Html(string='Website Description')
@@ -24,3 +24,9 @@ class Product_Template(models.Model):
     descript = fields.Char(string='Descript')
     upc_code = fields.Char(string='UPC Code')
 
+
+class ProductManufacturer(models.Model):
+    _name = 'product.manufacturer'
+
+    name = fields.Char(string='Name', required=True)
+    liaison = fields.Many2many(comodel_name='res.users')
