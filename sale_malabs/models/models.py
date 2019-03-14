@@ -54,12 +54,13 @@ class SaleOrder(models.Model):
 
     @api.model
     def create(self, vals):
-        rec = super(SaleOrder, self).create(vals)
-        for order_line in rec.order_line:
-            users = order_line.product_id.manufacturer.liaison
-            if users:
-                rec.message_subscribe_users(user_ids=users.ids)
-        return rec
+        message_follower_ids = vals.get('message_follower_ids') or []
+        for order_line in vals.get('order_line'):
+            liaisons = self.env['product.product'].browse([order_line[2].get('product_id')]).manufacturer.liaisons
+            for liaison in liaisons:
+                message_follower_ids += self.env['mail.followers']._add_follower_command(self._name, [], {liaison.id: None}, {}, force=True)[0]
+        vals['message_follower_ids'] = message_follower_ids
+        return super(SaleOrder, self).create(vals)
 
 
 class SaleOrderLine(models.Model):

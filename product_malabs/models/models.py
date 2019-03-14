@@ -27,6 +27,7 @@ class Product_Template(models.Model):
 
 class ProductManufacturer(models.Model):
     _name = 'product.manufacturer'
+    _order = 'name'
 
     name = fields.Char(string='Name', required=True)
-    liaison = fields.Many2many(comodel_name='res.users')
+    liaisons = fields.Many2many(comodel_name='res.partner')
