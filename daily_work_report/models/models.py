@@ -18,7 +18,7 @@ class DailyReport(models.Model):
     state = fields.Selection(string="State", selection=[
         ('draft', 'Draft'),
         ('submitted', 'Submitted'),
-    ], default='draft')
+    ], default='draft', track_visibility='onchange')
     keywords = fields.Char(string='Keywords')
     working_hours = fields.Integer(string='Working hours', default=8)
     content = fields.Html(string='Content')
@@ -51,3 +51,30 @@ class DailyReport(models.Model):
             raise exceptions.Warning(_('Can\'t Delete Submitted report'))
         else:
             return super(DailyReport, self).unlink()
+
+    @api.multi
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'submitted':
+            return 'daily_work_report.mt_daily_report'
+        return super(DailyReport, self)._track_subtype(init_values)
+
+    @api.multi
+    def message_post(self, **kwargs):
+        if not kwargs.get('email_from', None):
+            kwargs.update({'email_from': self.user_id.company_id.email})
+
+        if not kwargs.get('reply_to', None):
+            kwargs.update({'reply_to': self.user_id.email})
+        return super(DailyReport, self).message_post(**kwargs)
+
+    @api.model
+    def create(self, vals):
+        result = super(DailyReport, self).create(vals)
+        partner_ids = []
+        admins = self.env.ref('base.group_system').users.ids
+        for user in self.env.ref('project.group_project_manager').users:
+            if user.id not in admins:
+                partner_ids.append(user.partner_id.id)
+        result.message_subscribe(partner_ids=partner_ids)
+        return result

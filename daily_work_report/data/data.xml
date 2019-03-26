@@ -1,0 +1,8 @@
+<odoo>
+  <record id="mt_daily_report" model="mail.message.subtype">
+    <field name="name">Daily Report</field>
+    <field name="res_model">daily.report</field>
+    <field name="default" eval="True"/>
+    <field name="description">Someone submitted a daily report</field>
+  </record>
+</odoo>
