@@ -43,7 +43,7 @@ class DailyReport(models.Model):
         }
 
         for r in self:
-            r.create_date_display = r.create_date.isoformat(' ')[:11] + _('Daily Report') + ' ' + WEEK.get(r.create_date.weekday())
+            r.create_date_display = r.create_date.isoformat(' ')[:11] + _('Daily Report') + ' From ' + r.create_uid.name + ' ' + WEEK.get(r.create_date.weekday())
 
     @api.multi
     def unlink(self):
@@ -58,15 +58,6 @@ class DailyReport(models.Model):
         if 'state' in init_values and self.state == 'submitted':
             return 'daily_work_report.mt_daily_report'
         return super(DailyReport, self)._track_subtype(init_values)
-
-    @api.multi
-    def message_post(self, **kwargs):
-        if not kwargs.get('email_from', None):
-            kwargs.update({'email_from': self.user_id.company_id.email})
-
-        if not kwargs.get('reply_to', None):
-            kwargs.update({'reply_to': self.user_id.email})
-        return super(DailyReport, self).message_post(**kwargs)
 
     @api.model
     def create(self, vals):
