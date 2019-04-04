@@ -1,6 +1,9 @@
 import datetime
+import logging
 
 from odoo import models, fields, api, _, exceptions
+
+_logger = logging.getLogger(__name__)
 
 
 class DailyReport(models.Model):
@@ -69,3 +72,33 @@ class DailyReport(models.Model):
                 partner_ids.append(user.partner_id.id)
         result.message_subscribe(partner_ids=partner_ids)
         return result
+
+    @api.multi
+    def action_remind(self):
+        """ Checking report status for each user, and send a remind email if the report for this day still didn't submitted """
+        start = datetime.datetime.combine(datetime.date.today(), datetime.time(hour=7, minute=30))
+        end = datetime.datetime.combine(datetime.date.today(), datetime.time(hour=7, minute=41))
+        now = datetime.datetime.now()
+        if start < now and end > now:
+
+            today = fields.Datetime.to_datetime(fields.Date.today().isoformat())
+
+            template = self.env.ref('daily_work_report.email_template_daily_report', raise_if_not_found=False)
+
+            admins = self.env.ref('base.group_system').users.ids
+            for user in self.env.ref('project.group_project_user').users:
+                if user.id not in admins:
+                    if len(self.search((
+                        ('state', '=', 'submitted'),
+                        ('create_date', '>=', today),
+                        ('create_date', '<', today + datetime.timedelta(days=1)),
+                        ('user_id', '=', user.id),
+                    ))) == 0:
+                        if not user.email:
+                            _logger.info(_("Cannot send email: user %s has no email address.") % user.name)
+                            continue
+                        with self.env.cr.savepoint():
+                            template.with_context(lang=user.lang).send_mail(user.id, force_send=True, raise_exception=True)
+                        _logger.info("Daily Report Remind email sent for user <%s> to <%s>", user.login, user.email)
+                    else:
+                        _logger.info("User <%s> has submitted the report for these day.", user.login)

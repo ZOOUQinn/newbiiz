@@ -7,5 +7,7 @@
         'views/view.xml',
         'views/wizard.xml',
         'data/data.xml',
+        'data/mail_template_data.xml',
+        'data/ir_cron_data.xml',
     ],
 }
