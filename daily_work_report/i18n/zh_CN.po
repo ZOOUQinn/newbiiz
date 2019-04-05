@@ -6,14 +6,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 05:06+0000\n"
-"PO-Revision-Date: 2019-02-22 05:06+0000\n"
+"POT-Creation-Date: 2019-04-05 08:06+0000\n"
+"PO-Revision-Date: 2019-04-05 08:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: daily_work_report
+#: model:mail.template,body_html:daily_work_report.email_template_daily_report
+msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Dear ${object.name}\n"
+"        <br/><br/>\n"
+"        Here is remind for submitting Daily Work Report from ${object.company_id.name}.\n"
+"        <br/><br/>\n"
+"        Best regards,\n"
+"    </p>\n"
+"</div>"
+msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        尊敬的${object.name}\n"
+"        <br/><br/>\n"
+"        这里有来自${object.company_id.name}的提醒：请记得提交今天的工作报告。\n"
+"        <br/><br/>\n"
+"        祝工作愉快！\n"
+"    </p>\n"
+"</div>"
 
 #. module: daily_work_report
 #: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_needaction
@@ -41,7 +62,7 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:51
+#: code:addons/daily_work_report/models/models.py:54
 #, python-format
 msgid "Can't Delete Submitted report"
 msgstr "不可删除已提交报告"
@@ -50,6 +71,12 @@ msgstr "不可删除已提交报告"
 #: model_terms:ir.ui.view,arch_db:daily_work_report.daily_report_form_wizard
 msgid "Cancel"
 msgstr "取消"
+
+#. module: daily_work_report
+#: code:addons/daily_work_report/models/models.py:98
+#, python-format
+msgid "Cannot send email: user %s has no email address."
+msgstr ""
 
 #. module: daily_work_report
 #: model:ir.model.fields,field_description:daily_work_report.field_daily_report__content
@@ -74,12 +101,20 @@ msgid "Created on"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:46
+#: code:addons/daily_work_report/models/models.py:49
 #: model:ir.actions.act_window,name:daily_work_report.action_project_daily_report
 #: model:ir.ui.menu,name:daily_work_report.menu_project_daily_report
+#: model:mail.message.subtype,name:daily_work_report.mt_daily_report
 #, python-format
 msgid "Daily Report"
 msgstr "每日工作报告"
+
+#. module: daily_work_report
+#: model:ir.actions.server,name:daily_work_report.ir_cron_daily_report_remind_ir_actions_server
+#: model:ir.cron,cron_name:daily_work_report.ir_cron_daily_report_remind
+#: model:ir.cron,name:daily_work_report.ir_cron_daily_report_remind
+msgid "Daily Report Remind"
+msgstr ""
 
 #. module: daily_work_report
 #: model:ir.actions.act_window,name:daily_work_report.action_window_daily_report_wizard
@@ -98,6 +133,11 @@ msgid "Draft"
 msgstr "草稿"
 
 #. module: daily_work_report
+#: model:ir.model,name:daily_work_report.model_mail_thread
+msgid "Email Thread"
+msgstr ""
+
+#. module: daily_work_report
 #: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_follower_ids
 msgid "Followers"
 msgstr ""
@@ -113,7 +153,7 @@ msgid "Followers (Partners)"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:40
+#: code:addons/daily_work_report/models/models.py:43
 #, python-format
 msgid "Friday"
 msgstr ""
@@ -173,6 +213,11 @@ msgid "Main Attachment"
 msgstr ""
 
 #. module: daily_work_report
+#: model:ir.model,name:daily_work_report.model_mail_message
+msgid "Message"
+msgstr ""
+
+#. module: daily_work_report
 #: model:ir.model.fields,field_description:daily_work_report.field_daily_report__message_has_error
 msgid "Message Delivery error"
 msgstr ""
@@ -183,7 +228,7 @@ msgid "Messages"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:36
+#: code:addons/daily_work_report/models/models.py:39
 #, python-format
 msgid "Monday"
 msgstr ""
@@ -256,12 +301,17 @@ msgid "Please submit your own report."
 msgstr "仅允许提交本人工作报告"
 
 #. module: daily_work_report
+#: model:mail.template,subject:daily_work_report.email_template_daily_report
+msgid "Report Remind"
+msgstr ""
+
+#. module: daily_work_report
 #: model:ir.model,name:daily_work_report.model_daily_report_wizard
 msgid "Report Wizard"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:29
+#: code:addons/daily_work_report/models/models.py:32
 #, python-format
 msgid "Report on"
 msgstr ""
@@ -272,10 +322,15 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:41
+#: code:addons/daily_work_report/models/models.py:44
 #, python-format
 msgid "Saturday"
 msgstr ""
+
+#. module: daily_work_report
+#: model:mail.message.subtype,description:daily_work_report.mt_daily_report
+msgid "Someone submitted a daily report"
+msgstr "有人提交了今天的工作报告"
 
 #. module: daily_work_report
 #: model:ir.model.fields,field_description:daily_work_report.field_daily_report__state
@@ -308,7 +363,7 @@ msgid "Submitter"
 msgstr "提交人"
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:42
+#: code:addons/daily_work_report/models/models.py:45
 #, python-format
 msgid "Sunday"
 msgstr ""
@@ -319,7 +374,7 @@ msgid "Tasks"
 msgstr "任务"
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:39
+#: code:addons/daily_work_report/models/models.py:42
 #, python-format
 msgid "Thursday"
 msgstr ""
@@ -335,7 +390,7 @@ msgid "Today"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:37
+#: code:addons/daily_work_report/models/models.py:40
 #, python-format
 msgid "Tuesday"
 msgstr ""
@@ -361,7 +416,7 @@ msgid "Website communication history"
 msgstr ""
 
 #. module: daily_work_report
-#: code:addons/daily_work_report/models/models.py:38
+#: code:addons/daily_work_report/models/models.py:41
 #, python-format
 msgid "Wednesday"
 msgstr ""
