@@ -129,7 +129,7 @@ class mccsv_backend(models.Model):
                 'distributor': 'MALABS'
             })
 
-        attach_fname = 'Seagate_edi_Inventory_rpt__' + datetime.now().strftime("%Y-%m-%d_%H_%M_%S") + '.csv'
+        attach_fname = 'Seagate_edi_Inventory_rpt_' + datetime.now().strftime("%Y-%m-%d_%H_%M_%S") + '.csv'
         attachment = self.env['ir.attachment'].create({
             'name': attach_fname,
             'datas': base64.b64encode(csvfile.getvalue().encode('utf-8')),
