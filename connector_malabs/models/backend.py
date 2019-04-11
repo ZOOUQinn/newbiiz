@@ -18,9 +18,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
+import base64
+import csv
 import logging
-import platform
 from datetime import datetime, timedelta
+from io import StringIO
 
 from odoo import models, api, fields, _
 
@@ -92,4 +94,58 @@ class mccsv_backend(models.Model):
                 'numbercall': 1,
                 'nextcall': fields.Datetime().to_string(datetime.now() + timedelta(minutes=1))
             })
+        return True
+
+    def create_edi_report(self):
+        products = self.env['product.product'].search((('active', '=', True), ('location_id', '=', '13'), ('manufacturer', '=', 'Seagate')))
+        data = []
+        for product in products:
+            quants = self.env['stock.quant'].search((('product_id', '=', product.id),))
+            if quants:
+                quantity = 0.0
+                for quant in quants:
+                    if quant.location_id.id == 13:
+                        quantity += quant.quantity
+                if quantity > 0:
+                    data.append({
+                        'display_name': product.display_name,
+                        'quantity': quantity,
+                        'sku': product.mfr_part,
+                    })
+
+        csvfile = StringIO()
+        fieldnames = ['itmno', 'code', 'ma_itmno', 'country', 'qty', 'date', 'branch', 'distributor']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for cr in data:
+            writer.writerow({
+                'itmno': 'Seagate',
+                'code': '36',
+                'ma_itmno': cr['sku'],
+                'country': 'US',
+                'qty': cr['quantity'],
+                'date': datetime.now().strftime("%d-%b-%y"),
+                'branch': '1001',
+                'distributor': 'MALABS'
+            })
+
+        attach_fname = 'Seagate_edi_Inventory_rpt_' + datetime.now().strftime("%Y-%m-%d_%H_%M_%S") + '.csv'
+        attachment = self.env['ir.attachment'].create({
+            'name': attach_fname,
+            'datas': base64.b64encode(csvfile.getvalue().encode('utf-8')),
+            'datas_fname': attach_fname,
+            'res_model': 'mccsv.backend',
+            'res_id': 0,
+            'type': 'binary',
+        })
+
+        template = self.env.ref('connector_malabs.email_template_edi_report', raise_if_not_found=False)
+
+        admins = self.env.ref('base.group_system').users.ids
+        for user in self.env.ref('sales_team.group_sale_manager').users:
+            if user.id not in admins:
+                with self.env.cr.savepoint():
+                    template.with_context(lang=user.lang).send_mail(user.id, force_send=True, raise_exception=True, email_values={'attachment_ids': [attachment.id]})
+                    _logger.info("EDI Report email sent for user <%s> to <%s>", user.login, user.email)
+
         return True

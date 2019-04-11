@@ -2,11 +2,13 @@
     'name': 'Connector To CSV',
     'depends': [
         'connector',
-        'product_malabs',
+        'sale_malabs',
     ],
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
+        'data/ir_cron_data.xml',
+        'data/mail_template_data.xml',
     ],
-    'version': '1.1',
+    'version': '1.4',
 }

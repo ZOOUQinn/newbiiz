@@ -24,6 +24,9 @@
         <xpath expr="//tree/field[@name='purchase_price']" position="attributes">
           <attribute name="groups">purchase.group_purchase_user</attribute>
         </xpath>
+        <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+          <attribute name="groups">sales_team.group_sale_manager</attribute>
+        </xpath>
       </data>
     </field>
   </record>

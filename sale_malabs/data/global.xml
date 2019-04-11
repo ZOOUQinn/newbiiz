@@ -1,3 +1,7 @@
 <odoo>
   <delete model="ir.ui.view" search="[('name', '=like', 'Odoo Studio%'),]"/>
-D</odoo>
+  <delete model="ir.model.fields" search="[('state', '=', 'manual'),('model_id', '=', ref('base.model_res_users'))]"/>
+  <delete model="ir.model.fields" search="[('state', '=', 'manual'),('model_id', '=', ref('sale.model_sale_order'))]"/>
+  <delete model="ir.model.fields" search="[('state', '=', 'manual'),('model_id', '=', ref('sale.model_product_template'))]"/>
+  <delete model="ir.model.fields" search="[('state', '=', 'manual'),('model_id', '=', ref('base.model_res_partner'))]"/>
+</odoo>
