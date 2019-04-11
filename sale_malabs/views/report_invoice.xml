@@ -15,12 +15,12 @@
   </template>
 
   <template id="report_invoice_document_with_serial_no" inherit_id="account.report_invoice_document" primary="True">
-    <xpath expr="//t/table/thead/tr/th[1]" position="after">
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[1]" position="after">
       <th class="text-right">Lot</th>
     </xpath>
 
-    <xpath expr="//t/table/tbody/t/t[@t-as='l']" position="replace">
-      <t t-foreach="layout_category['lines']" t-as="l">
+    <xpath expr="//table[@name='invoice_line_table']/tbody/t[@t-as='line']" position="replace">
+      <t t-foreach="o.invoice_line_ids" t-as="l">
         <t t-if="l.product_id.tracking == 'serial'">
           <t t-foreach="l.sale_line_ids" t-as="sale_line">
             <t t-foreach="sale_line.move_ids" t-as="move_id">
@@ -107,9 +107,9 @@
 
   <template id="report_invoice_document_customized" inherit_id="account.report_invoice_document" primary="True">
 
-    <xpath expr="//div[@groups='sale.group_delivery_invoice_address']/div[@t-field='o.partner_id']"
-           position="attributes">
-      <attribute name="t-options">{"widget": "contact", "fields": ["address", "name", "email"], "no_marker": True}
+    <xpath expr="//address" position="attributes">
+      <attribute name="t-options">
+        {"widget": "contact", "fields": ["address", "name", "email"], "no_marker": True}
       </attribute>
     </xpath>
 
@@ -128,25 +128,25 @@
       </div>
     </xpath>
 
-    <xpath expr="//t/table/thead/tr/th[1]" position="after">
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[1]" position="after">
       <th class="text-right">Item List</th>
       <th class="text-right">Manufacturer ID</th>
     </xpath>
 
-    <xpath expr="//t/table/tbody/t/t[@t-as='l']/tr/td[1]/span" position="replace">
-      <span t-esc="l.product_id.name[:24]"/>
+    <xpath expr="//td[@name='account_invoice_line_name']/span" position="replace">
+      <span t-esc="line.product_id.name[:24]"/>
     </xpath>
 
-    <xpath expr="//t/table/tbody/t/t[@t-as='l']/tr/td[2]/span[1]" position="replace">
-      <span t-esc="int(float(l.quantity))"/>
+    <xpath expr="//t[@name='account_invoice_line_accountable']/td[3]/span[1]" position="replace">
+      <span t-esc="int(float(line.quantity))"/>
     </xpath>
 
-    <xpath expr="//t/table/tbody/t/t[@t-as='l']/tr/td[1]" position="after">
+    <xpath expr="//td[@name='account_invoice_line_name']" position="after">
       <td class="text-right">
-        <span t-field="l.product_id.ma_labs_list"/>
+        <span t-field="line.product_id.ma_labs_list"/>
       </td>
       <td class="text-right">
-        <span t-field="l.product_id.manufacturer"/>
+        <span t-field="line.product_id.manufacturer"/>
       </td>
     </xpath>
   </template>
