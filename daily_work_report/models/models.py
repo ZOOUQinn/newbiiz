@@ -86,8 +86,9 @@ class DailyReport(models.Model):
             template = self.env.ref('daily_work_report.email_template_daily_report', raise_if_not_found=False)
 
             admins = self.env.ref('base.group_system').users.ids
+            managers = self.env.ref('project.group_project_manager').users.ids
             for user in self.env.ref('project.group_project_user').users:
-                if user.id not in admins:
+                if user.id not in admins and user.id not in managers:
                     if len(self.search((
                         ('state', '=', 'submitted'),
                         ('create_date', '>=', today),
