@@ -46,7 +46,10 @@ class DailyReport(models.Model):
         }
 
         for r in self:
-            r.create_date_display = r.create_date.isoformat(' ')[:11] + _('Daily Report') + ' From ' + r.create_uid.name + ' ' + WEEK.get(r.create_date.weekday())
+            if r.create_uid:
+                r.create_date_display = r.create_date.isoformat(' ')[:11] + _('Daily Report') + ' From ' + r.create_uid.name + ' ' + WEEK.get(r.create_date.weekday())
+            else:
+                r.create_date_display = 'Removed'
 
     @api.multi
     def unlink(self):
