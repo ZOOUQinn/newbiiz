@@ -4,6 +4,7 @@
     'depends': ['project'],
     'data': [
         'security/ir.model.access.csv',
+        'security/access_rules.xml',
         'views/view.xml',
         'views/wizard.xml',
         'data/data.xml',
