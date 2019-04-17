@@ -62,7 +62,7 @@ class DailyReport(models.Model):
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'state' in init_values and self.state == 'submitted':
-            return 'daily_work_report.mt_daily_report'
+            return 'daily_newbiiz.mt_daily_report'
         return super(DailyReport, self)._track_subtype(init_values)
 
     @api.model

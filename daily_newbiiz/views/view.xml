@@ -19,7 +19,7 @@
     <field name="arch" type="xml">
       <form>
         <header>
-          <button string="Submit" name="daily_work_report.action_window_daily_report_wizard" type="action" states="draft"/>
+          <button string="Submit" name="daily_newbiiz.action_window_daily_report_wizard" type="action" states="draft"/>
           <field name="state" widget="statusbar"/>
         </header>
         <sheet>
