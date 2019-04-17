@@ -86,7 +86,7 @@ class DailyReport(models.Model):
 
             today = fields.Datetime.to_datetime(fields.Date.today().isoformat())
 
-            template = self.env.ref('daily_work_report.email_template_daily_report', raise_if_not_found=False)
+            template = self.env.ref('daily_newbiiz.email_template_daily_report', raise_if_not_found=False)
 
             admins = self.env.ref('base.group_system').users.ids
             managers = self.env.ref('project.group_project_manager').users.ids
