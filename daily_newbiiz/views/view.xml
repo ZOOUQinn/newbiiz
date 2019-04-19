@@ -25,7 +25,7 @@
         <sheet>
           <group>
             <group>
-              <field name="keywords" attrs="{'readonly':[('state','in',['submitted'])]}"/>
+              <field name="keywords" placeholder="Don't suppose to input date." attrs="{'readonly':[('state','in',['submitted'])]}"/>
             </group>
             <group>
               <field name="working_hours" attrs="{'readonly':[('state','in',['submitted'])]}"/>
