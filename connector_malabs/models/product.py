@@ -30,14 +30,6 @@ from odoo import models, fields, _
 
 _logger = logging.getLogger(__name__)
 
-def get_rate(base='USD', symbols='CAD'):
-    url = 'https://openexchangerates.org/api/latest.json'
-    params = {'app_id': '477b87e78dd244a3b388a81951d869b1', 'base': base, 'symbols': symbols}
-    r = requests.get(url=url, params=params)
-    res = r.json()
-    return res.get('rates').get(symbols, 0), str(datetime.utcfromtimestamp(res.get('timestamp', None)))
-
-RATE, RATE_TIME = get_rate()
 
 class MalabsProductProduct(models.Model):
     _name = 'malabs.product.product'
@@ -158,7 +150,7 @@ class ProductProductImporter(Component):
             ))
             data.update({
                 'pricelist_id': self.env.ref('product.list0').id,
-                'price_surcharge': binding.instant_rebate * RATE,
+                'price_surcharge': binding.instant_rebate / self.env.ref('base.USD').rate,
             })
             del data['base']
             del data['base_pricelist_id']
@@ -210,9 +202,9 @@ class ProductProductImportMapper(Component):
         return {
             'usd_sales_price': record.get('price', 0.0),
             'usd_cost': record.get('cost', 0.0),
-            'list_price': float(record.get('price', 0.0)) * RATE,
-            'currency_rate': RATE,
-            'currency_rate_date': RATE_TIME,
+            'list_price': float(record.get('price', 0.0)) / self.env.ref('base.USD').rate,
+            'currency_rate': self.env.ref('base.USD').rate,
+            # 'currency_rate_date': '??', TODO: Figure out getting value from 'res.config.settings'.
         }
 
     @mapping
