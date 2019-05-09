@@ -4,3 +4,7 @@ Prerequisite
 
    Select **Prices computed from formulas**
 #. Check **Settings** → **Invoicing/Accounting** → **Currencies** → **Multi-Currencies**
+
+Facility
+--------
+#. Return Merchandise Authorisation (RMA)
