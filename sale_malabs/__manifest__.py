@@ -11,6 +11,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/global.xml',
+        'data/rma.xml',
         'views/view.xml',
         'views/view_from_studio.xml',
         'views/report_invoice.xml',

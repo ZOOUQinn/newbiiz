@@ -79,6 +79,11 @@ class CrmClaimEpt(models.Model):
 
             self.claim_line_ids = claim_line_ids
 
+    @api.model
+    def create(self, vals):
+        vals.update({'code': self.env['ir.sequence'].next_by_code('crm.claim.ept')})
+        return super(CrmClaimEpt, self).create(vals)
+
     @api.multi
     def action_rma_send(self):
         pass

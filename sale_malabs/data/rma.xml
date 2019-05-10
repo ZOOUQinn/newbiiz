@@ -1,0 +1,8 @@
+<odoo>
+  <record id="sequence_crm_claim_ept" model="ir.sequence">
+    <field name="name">RMA Code</field>
+    <field name="code">crm.claim.ept</field>
+    <field name="prefix">RMA</field>
+    <field name="padding">4</field>
+  </record>
+</odoo>
