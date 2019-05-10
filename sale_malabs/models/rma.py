@@ -68,6 +68,8 @@ class CrmClaimEpt(models.Model):
         if picking:
             self.partner_id = picking.partner_id
             self.email_from = picking.partner_id.email
+            self.partner_phone = picking.partner_id.phone
+            self.sale_id = picking.sale_id
 
             claim_line_ids = []
             for line in picking.move_ids_without_package:
@@ -90,7 +92,27 @@ class CrmClaimEpt(models.Model):
 
     @api.multi
     def approve_claim(self):
-        pass
+        self.ensure_one()
+        self.state = 'approve'
+        picking = self.env['stock.picking'].create({
+            'picking_type_id': self.env.ref('stock.picking_type_in').id,
+            'location_id': self.picking_id.location_dest_id.id,
+            'location_dest_id': self.location_id.id or self.picking_id.location_dest_id.id,
+        })
+
+        for line in self.claim_line_ids:
+            self.env['stock.move'].create({
+                'name': 'Qinn',
+                'picking_id': picking.id,
+                'product_id': line.product_id.id,
+                'product_uom_qty': line.quantity,
+                'product_uom': line.product_id.uom_id.id,
+                'location_id': self.picking_id.location_dest_id.id,
+                'location_dest_id': self.location_id.id or self.picking_id.location_dest_id.id,
+            })
+
+        # return_picking_id
+        self.return_picking_id = picking.id
 
     @api.multi
     def reject_claim(self):
@@ -110,7 +132,13 @@ class CrmClaimEpt(models.Model):
 
     @api.multi
     def show_return_picking(self):
-        pass
+        action = self.env.ref('stock.action_picking_tree_all').read()[0]
+
+        picking = self.return_picking_id
+
+        action['views'] = [(self.env.ref('stock.view_picking_form').id, 'form')]
+        action['res_id'] = picking.id
+        return action
 
     @api.multi
     def show_delivery_picking(self):
