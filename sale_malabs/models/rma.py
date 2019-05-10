@@ -30,7 +30,7 @@ class CrmClaimEpt(models.Model):
     new_sale_id = fields.Many2one(comodel_name='sale.order', string='New Sale Order')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Partner')
     partner_phone = fields.Char(string='Phone')
-    picking_id = fields.Many2one(comodel_name='stock.picking', domain=[
+    picking_id = fields.Many2one(comodel_name='stock.picking', string='Delivery Order',  domain=[
         ('location_dest_id.usage', '=', 'customer'),
         ('state', '=', 'done')
     ])
@@ -61,6 +61,23 @@ class CrmClaimEpt(models.Model):
     user_fault = fields.Char(string='Trouble Responsible')
     user_id = fields.Many2one(comodel_name='res.users', string='Responsible')
     website_message_ids = fields.One2many(comodel_name='mail.message', inverse_name='res_id')
+
+    @api.onchange('picking_id')
+    def onchange_picking(self):  # TODO: If the ClaimLine has saved while CrmClainEpt didn't, there will be useless claim lines in Database.
+        picking = self.picking_id
+        if picking:
+            self.partner_id = picking.partner_id
+            self.email_from = picking.partner_id.email
+
+            claim_line_ids = []
+            for line in picking.move_ids_without_package:
+                claim_line_ids.append((4, self.env['claim.line.ept'].create({
+                    'product_id': line.product_id.id,
+                    'done_qty': line.quantity_done,
+                    'quantity': line.quantity_done,
+                }).id))
+
+            self.claim_line_ids = claim_line_ids
 
     @api.multi
     def action_rma_send(self):
@@ -107,7 +124,7 @@ class Claim_line_Ept(models.Model):
     _name = 'claim.line.ept'
     _description = 'Claim Line EPT'
 
-    claim_id = fields.Many2one(comodel_name='crm.claim.ept', string='Related claim', readonly=True)
+    claim_id = fields.Many2one(comodel_name='crm.claim.ept', string='Related claim', readonly=True, ondelete='cascade')
     claim_type = fields.Selection(selection=[], string='Claim Type')
     display_name = fields.Char(string='Display Name', readonly=True)
     done_qty = fields.Float(string='Delivered Quantity', readonly=True)
