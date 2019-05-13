@@ -101,7 +101,7 @@
           <button type="object" name="action_rma_send" string="Send RMA By Mail"
                   attrs="{'invisible':[('rma_send','=',False)]}"/>
           <button type="object" name="approve_claim" states="draft" string="Approve" class="oe_highlight"/>
-          <button type="object" name="reject_claim" states="draft" string="Reject" class="oe_highlight"/>
+          <button type="action" name="reject_claim" states="draft" string="Reject" class="oe_highlight"/>
           <button type="object" name="set_to_draft" attrs="{'invisible':[('state','not in',['approve','reject'])]}"
                   string="Set to Draft" class="oe_highlight"/>
           <button type="object" name="process_claim" string="Validate" class="oe_highlight"
@@ -186,7 +186,7 @@
                              attrs="{'readonly':[('parent.state','!=','process')],'required':[('parent.state','=','process')]}"/>
                       <button name="action_claim_refund_process_ept"
                               attrs="{'invisible':['|',('parent.state','not in',['process','close']),('claim_type','!=','replace')]}"
-                              icon="fa-cogs" string="Set product to be replace" type="object"/>
+                              icon="fa-cogs" string="Set product to be replace" type="action"/>
                       <field name="move_id" invisible="1"/>
                     </tree>
                     <form>

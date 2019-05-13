@@ -63,28 +63,32 @@ class CrmClaimEpt(models.Model):
     website_message_ids = fields.One2many(comodel_name='mail.message', inverse_name='res_id')
 
     @api.onchange('picking_id')
-    def onchange_picking(self):  # TODO: If the ClaimLine has saved while CrmClainEpt didn't, there will be useless claim lines in Database.
+    def onchange_picking(self):
         picking = self.picking_id
         if picking:
             self.partner_id = picking.partner_id
             self.email_from = picking.partner_id.email
             self.partner_phone = picking.partner_id.phone
             self.sale_id = picking.sale_id
+            self.section_id = picking.sale_id.team_id
 
-            claim_line_ids = []
-            for line in picking.move_ids_without_package:
-                claim_line_ids.append((4, self.env['claim.line.ept'].create({
-                    'product_id': line.product_id.id,
-                    'done_qty': line.quantity_done,
-                    'quantity': line.quantity_done,
-                }).id))
+            claim_line_ids = [(5, 0, 0)]
+            for move in picking.move_ids_without_package:
+                claim_line_ids.append((0, 0, {
+                    'product_id': move.product_id.id,
+                    'done_qty': move.quantity_done,
+                    'quantity': move.quantity_done,
+                    'move_id': move.id,
+                }))
 
             self.claim_line_ids = claim_line_ids
 
     @api.model
     def create(self, vals):
         vals.update({'code': self.env['ir.sequence'].next_by_code('crm.claim.ept')})
-        return super(CrmClaimEpt, self).create(vals)
+        record = super(CrmClaimEpt, self).create(vals)
+        record.sale_id = record.picking_id.sale_id
+        return record
 
     @api.multi
     def action_rma_send(self):
@@ -111,7 +115,6 @@ class CrmClaimEpt(models.Model):
                 'location_dest_id': self.location_id.id or self.picking_id.location_dest_id.id,
             })
 
-        # return_picking_id
         self.return_picking_id = picking.id
 
     @api.multi
@@ -153,7 +156,7 @@ class CrmClaimEpt(models.Model):
         pass
 
 
-class Claim_line_Ept(models.Model):
+class ClaimLineEpt(models.Model):
     _name = 'claim.line.ept'
     _description = 'Claim Line EPT'
 
@@ -163,12 +166,18 @@ class Claim_line_Ept(models.Model):
     done_qty = fields.Float(string='Delivered Quantity', readonly=True)
     is_create_invoice = fields.Boolean(string='Create Invoice')
     move_id = fields.Many2one(comodel_name='stock.move', string='Move')
-    product_id =fields.Many2one(comodel_name='product.product', string='Product')
+    product_id = fields.Many2one(comodel_name='product.product', string='Product')
     quantity = fields.Float(string='Return Quantity')
     return_qty = fields.Float(string='Received Quantity', readonly=True)
     rma_reason_id = fields.Many2one(comodel_name='rma.reason.ept', string='Reason')
     to_be_replace_product_id = fields.Many2one(comodel_name='product.product', string='Product to be Replace')
     to_be_replace_quantity = fields.Float(string='Replace Quantity')
+
+    @api.model
+    def create(self, vals):
+        record = super(ClaimLineEpt, self).create(vals)
+        record.done_qty = record.move_id.quantity_done
+        return record
 
     @api.multi
     def action_claim_refund_process_ept(self):
