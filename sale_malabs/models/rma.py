@@ -101,18 +101,20 @@ class CrmClaimEpt(models.Model):
         picking = self.env['stock.picking'].create({
             'picking_type_id': self.env.ref('stock.picking_type_in').id,
             'location_id': self.picking_id.location_dest_id.id,
-            'location_dest_id': self.location_id.id or self.picking_id.location_dest_id.id,
+            'location_dest_id': self.location_id.id or self.picking_id.location_id.id,
+            'partner_id': self.partner_id.id,
+            'origin': 'Return of ' + self.picking_id.name
         })
 
         for line in self.claim_line_ids:
-            self.env['stock.move'].create({
+            line.move_id = self.env['stock.move'].create({
                 'name': 'Qinn',
                 'picking_id': picking.id,
                 'product_id': line.product_id.id,
                 'product_uom_qty': line.quantity,
                 'product_uom': line.product_id.uom_id.id,
                 'location_id': self.picking_id.location_dest_id.id,
-                'location_dest_id': self.location_id.id or self.picking_id.location_dest_id.id,
+                'location_dest_id': self.location_id.id or self.picking_id.location_id.id,
             })
 
         self.return_picking_id = picking.id
@@ -161,7 +163,11 @@ class ClaimLineEpt(models.Model):
     _description = 'Claim Line EPT'
 
     claim_id = fields.Many2one(comodel_name='crm.claim.ept', string='Related claim', readonly=True, ondelete='cascade')
-    claim_type = fields.Selection(selection=[], string='Claim Type')
+    claim_type = fields.Selection(selection=[
+        ('refund', 'Refund'),
+        ('replace', 'Replace'),
+        ('repair', 'Repair'),
+    ], string='Claim Type')
     display_name = fields.Char(string='Display Name', readonly=True)
     done_qty = fields.Float(string='Delivered Quantity', readonly=True)
     is_create_invoice = fields.Boolean(string='Create Invoice')
@@ -178,10 +184,6 @@ class ClaimLineEpt(models.Model):
         record = super(ClaimLineEpt, self).create(vals)
         record.done_qty = record.move_id.quantity_done
         return record
-
-    @api.multi
-    def action_claim_refund_process_ept(self):
-        pass
 
 
 class RMA_Reason_Ept(models.Model):
@@ -210,6 +212,32 @@ class StockPicking(models.Model):
 
     view_claim_button = fields.Boolean(string='View Claim Button', readonly=True)
     claim_count_out = fields.Integer(string='Claims', readonly=True)
+
+    @api.multi
+    def button_validate(self):
+        res = super(StockPicking, self).button_validate()
+        crm_claim_ept = self.env['crm.claim.ept'].search((('return_picking_id', '=', self.id),))
+        if crm_claim_ept:
+
+            for claim_line in crm_claim_ept.claim_line_ids:
+                claim_line.claim_type = claim_line.rma_reason_id.action
+
+            crm_claim_ept.state = 'process'
+        return res
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    @api.multi
+    def write(self, vals):
+        record = super(StockMove, self).write(vals)
+
+        if vals.get('state') == 'done':
+            claim_lime = self.env['claim.line.ept'].search((('move_id', '=', self.id),))
+            if claim_lime:
+                claim_lime.return_qty = self.quantity_done
+
+        return record
 
 
 class AccountInvoice(models.Model):

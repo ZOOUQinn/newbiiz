@@ -184,7 +184,7 @@
                       <field name="return_qty" readonly="1"/>
                       <field name="claim_type" string="Action"
                              attrs="{'readonly':[('parent.state','!=','process')],'required':[('parent.state','=','process')]}"/>
-                      <button name="action_claim_refund_process_ept"
+                      <button name="sale_malabs.action_claim_refund_process_ept"
                               attrs="{'invisible':['|',('parent.state','not in',['process','close']),('claim_type','!=','replace')]}"
                               icon="fa-cogs" string="Set product to be replace" type="action"/>
                       <field name="move_id" invisible="1"/>

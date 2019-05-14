@@ -15,4 +15,6 @@ class ClaimProcessWizard(models.TransientModel):
     quantity = fields.Float()
     reject_message_id = fields.Many2one(comodel_name='claim.reject.message', string='Reject Reason')
     send_goods_back = fields.Boolean(string='Send Goods Back to Customer')
-    state = fields.Selection(selection=[])
+    state = fields.Selection(selection=[
+        ('process', 'Process'),
+    ], default='process')
