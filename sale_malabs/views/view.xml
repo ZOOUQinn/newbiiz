@@ -101,7 +101,7 @@
           <button type="object" name="action_rma_send" string="Send RMA By Mail"
                   attrs="{'invisible':[('rma_send','=',False)]}"/>
           <button type="object" name="approve_claim" states="draft" string="Approve" class="oe_highlight"/>
-          <button type="action" name="reject_claim" states="draft" string="Reject" class="oe_highlight"/>
+          <button type="action" name="sale_malabs.action_reject_claim" states="draft" string="Reject" class="oe_highlight"/>
           <button type="object" name="set_to_draft" attrs="{'invisible':[('state','not in',['approve','reject'])]}"
                   string="Set to Draft" class="oe_highlight"/>
           <button type="object" name="process_claim" string="Validate" class="oe_highlight"
