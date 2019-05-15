@@ -51,7 +51,7 @@ class CrmClaimEpt(models.Model):
         ('approve', 'Approve'),
         ('process', 'Process'),
         ('close', 'Close'),
-        ('rejected', 'Rejected'),
+        ('reject', 'Rejected'),
     ], default='draft')
     to_return_picking_ids = fields.Many2many(comodel_name='stock.picking', string='Return Delivery Orders')
     type_action = fields.Selection(selection=[
@@ -233,9 +233,9 @@ class StockMove(models.Model):
         record = super(StockMove, self).write(vals)
 
         if vals.get('state') == 'done':
-            claim_lime = self.env['claim.line.ept'].search((('move_id', '=', self.id),))
-            if claim_lime:
-                claim_lime.return_qty = self.quantity_done
+            for move in self:
+                for claim_lime in self.env['claim.line.ept'].search((('move_id', '=', move.id),)):
+                    claim_lime.return_qty = move.quantity_done
 
         return record
 
