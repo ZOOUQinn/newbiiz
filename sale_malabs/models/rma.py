@@ -120,10 +120,6 @@ class CrmClaimEpt(models.Model):
         self.return_picking_id = picking.id
 
     @api.multi
-    def reject_claim(self):
-        pass
-
-    @api.multi
     def set_to_draft(self):
         pass
 
@@ -139,6 +135,7 @@ class CrmClaimEpt(models.Model):
                 'origin': 'Return of ' + self.return_picking_id.name
             })
 
+            sale_order_lines = []
             for claim_line in claim.claim_line_ids:
                 if claim_line.to_be_replace_product_id and claim_line.to_be_replace_quantity > 0:
                     claim_line.move_id = self.env['stock.move'].create({
@@ -150,10 +147,22 @@ class CrmClaimEpt(models.Model):
                         'location_dest_id': self.picking_id.location_dest_id.id,
                         'location_id': self.location_id.id or self.picking_id.location_id.id,
                     })
+                    if claim_line.is_create_invoice == True:
+                        sale_order_lines.append((0, 0, {
+                            'product_id': claim_line.to_be_replace_product_id.id,
+                            'product_uom_qty': claim_line.to_be_replace_quantity,
+                        }))
+
                 else:
                     raise exceptions.Warning(_('Claim line with %s has Replace product or Replace quantity or both not set.') % claim_line.product_id.name)
 
             self.to_return_picking_ids = ((4, picking.id, False),)
+
+            if sale_order_lines:
+                self.new_sale_id = self.env['sale.order'].create({
+                    'partner_id': self.partner_id.id,
+                    'order_line': sale_order_lines,
+                })
 
             claim.state = 'close'
 
@@ -189,7 +198,12 @@ class CrmClaimEpt(models.Model):
 
     @api.multi
     def act_new_so_ept(self):
-        pass
+        action = self.env.ref('sale.action_quotations').read()[0]
+        sale_order = self.new_sale_id
+
+        action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
+        action['res_id'] = sale_order.id
+        return action
 
 
 class ClaimLineEpt(models.Model):

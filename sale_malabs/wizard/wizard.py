@@ -35,6 +35,7 @@ class ClaimProcessWizard(models.TransientModel):
         self.ensure_one()
         self.claim_line_id.to_be_replace_product_id = self.product_id
         self.claim_line_id.to_be_replace_quantity = self.quantity
+        self.claim_line_id.is_create_invoice = self.is_create_invoice
 
     @api.multi
     def reject_claim(self):
@@ -47,5 +48,8 @@ class ClaimProcessWizard(models.TransientModel):
     def onchange_product(self):
         if self.product_id == self.claim_line_id.product_id:
             self.hide = True
+            self.is_create_invoice = False
+            self.quantity = self.claim_line_id.return_qty
         else:
             self.hide = False
+            self.is_create_invoice = True
