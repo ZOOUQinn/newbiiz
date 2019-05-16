@@ -97,7 +97,6 @@ class CrmClaimEpt(models.Model):
     @api.multi
     def approve_claim(self):
         self.ensure_one()
-        self.state = 'approve'
         picking = self.env['stock.picking'].create({
             'picking_type_id': self.env.ref('stock.picking_type_in').id,
             'location_id': self.picking_id.location_dest_id.id,
@@ -118,6 +117,7 @@ class CrmClaimEpt(models.Model):
             })
 
         self.return_picking_id = picking.id
+        self.state = 'approve'
 
     @api.multi
     def set_to_draft(self):
@@ -136,33 +136,72 @@ class CrmClaimEpt(models.Model):
             })
 
             sale_order_lines = []
+            account_invoice_lines = []
+
+            price_unit = {}
+            for order_line in claim.sale_id.order_line:
+                price_unit.update({order_line.product_id.id: order_line.price_unit})
+
             for claim_line in claim.claim_line_ids:
-                if claim_line.to_be_replace_product_id and claim_line.to_be_replace_quantity > 0:
+                if claim_line.claim_type == 'replace':
+                    if claim_line.to_be_replace_product_id and claim_line.to_be_replace_quantity > 0:
+                        claim_line.move_id = self.env['stock.move'].create({
+                            'name': 'Qinn',
+                            'picking_id': picking.id,
+                            'product_id': claim_line.to_be_replace_product_id.id,
+                            'product_uom_qty': claim_line.to_be_replace_quantity,
+                            'product_uom': claim_line.to_be_replace_product_id.uom_id.id,
+                            'location_dest_id': self.picking_id.location_dest_id.id,
+                            'location_id': self.location_id.id or self.picking_id.location_id.id,
+                        })
+                        if claim_line.is_create_invoice == True:
+                            sale_order_lines.append((0, 0, {
+                                'product_id': claim_line.to_be_replace_product_id.id,
+                                'product_uom_qty': claim_line.to_be_replace_quantity,
+                            }))
+
+                    else:
+                        raise exceptions.Warning(
+                            _('Claim line with %s has Replace product or Replace quantity or both not set.')
+                            % claim_line.product_id.name
+                        )
+
+                elif claim_line.claim_type == 'repair':
                     claim_line.move_id = self.env['stock.move'].create({
                         'name': 'Qinn',
                         'picking_id': picking.id,
-                        'product_id': claim_line.to_be_replace_product_id.id,
-                        'product_uom_qty': claim_line.to_be_replace_quantity,
-                        'product_uom': claim_line.to_be_replace_product_id.uom_id.id,
+                        'product_id': claim_line.product_id.id,
+                        'product_uom_qty': claim_line.return_qty,
+                        'product_uom': claim_line.product_id.uom_id.id,
                         'location_dest_id': self.picking_id.location_dest_id.id,
                         'location_id': self.location_id.id or self.picking_id.location_id.id,
                     })
-                    if claim_line.is_create_invoice == True:
-                        sale_order_lines.append((0, 0, {
-                            'product_id': claim_line.to_be_replace_product_id.id,
-                            'product_uom_qty': claim_line.to_be_replace_quantity,
-                        }))
+                elif claim_line.claim_type == 'refund':
+                    account_invoice_lines.append((0, 0, {
+                        'name': 'Refund for %s' % self.sale_id.name,
+                        'product_id': claim_line.product_id.id,
+                        'quantity': claim_line.return_qty,
+                        'price_unit': price_unit.get(claim_line.product_id.id),
+                        'account_id': self.env.ref('l10n_ca.1_chart2171_en').id
+                    }))
 
-                else:
-                    raise exceptions.Warning(_('Claim line with %s has Replace product or Replace quantity or both not set.') % claim_line.product_id.name)
-
-            self.to_return_picking_ids = ((4, picking.id, False),)
+            if picking.move_lines:
+                self.to_return_picking_ids = ((4, picking.id, False),)
+            else:
+                picking.unlink()
 
             if sale_order_lines:
                 self.new_sale_id = self.env['sale.order'].create({
                     'partner_id': self.partner_id.id,
                     'order_line': sale_order_lines,
                 })
+
+            if account_invoice_lines:
+                self.refund_invoice_ids = ((4, self.env['account.invoice'].create({
+                    'partner_id': self.partner_id.id,
+                    'invoice_line_ids': account_invoice_lines,
+                    'claim_id': self.id,
+                }).id, False),)
 
             claim.state = 'close'
 
@@ -194,7 +233,15 @@ class CrmClaimEpt(models.Model):
 
     @api.multi
     def act_supplier_invoice_refund_ept(self):
-        pass
+        action = self.env.ref('account.action_invoice_tree').read()[0]
+
+        invoices = self.mapped('refund_invoice_ids')
+        if len(invoices) > 1:
+            action['domain'] = [('id', 'in', invoices.ids)]
+        elif invoices:
+            action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
+            action['res_id'] = invoices.id
+        return action
 
     @api.multi
     def act_new_so_ept(self):
