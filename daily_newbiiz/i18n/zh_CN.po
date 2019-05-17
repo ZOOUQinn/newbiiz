@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-17 20:03+0000\n"
-"PO-Revision-Date: 2019-05-17 20:03+0000\n"
+"POT-Creation-Date: 2019-05-17 22:14+0000\n"
+"PO-Revision-Date: 2019-05-17 22:14+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,18 +62,18 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: daily_newbiiz
-#: code:addons/daily_newbiiz/models/models.py:65
+#: code:addons/daily_newbiiz/models/models.py:66
 #, python-format
 msgid "Can't Delete Submitted report"
 msgstr "报告已处于锁定状态。"
 
-module: daily_newbiiz
+#. module: daily_newbiiz
 #: model_terms:ir.ui.view,arch_db:daily_newbiiz.daily_report_form_wizard
 msgid "Cancel"
 msgstr "取消"
 
 #. module: daily_newbiiz
-#: code:addons/daily_newbiiz/models/models.py:110
+#: code:addons/daily_newbiiz/models/models.py:111
 #, python-format
 msgid "Cannot send email: user %s has no email address."
 msgstr ""
@@ -101,7 +101,7 @@ msgid "Created on"
 msgstr ""
 
 #. module: daily_newbiiz
-#: code:addons/daily_newbiiz/models/models.py:56
+#: code:addons/daily_newbiiz/models/models.py:57
 #: model:ir.actions.act_window,name:daily_newbiiz.action_project_daily_report
 #: model:ir.ui.menu,name:daily_newbiiz.menu_project_daily_report
 #: model:mail.message.subtype,name:daily_newbiiz.mt_daily_report
@@ -279,7 +279,7 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: daily_newbiiz
-#: code:addons/daily_newbiiz/wizard/wizard.py:23
+#: code:addons/daily_newbiiz/wizard/wizard.py:33
 #, python-format
 msgid "Only ONE report for each day."
 msgstr "每日只可提交一份工作日报。"
@@ -295,13 +295,13 @@ msgid "Planned"
 msgstr ""
 
 #. module: daily_newbiiz
-#: code:addons/daily_newbiiz/models/models.py:60
+#: code:addons/daily_newbiiz/models/models.py:61
 #, python-format
 msgid "Please set your timezone first."
 msgstr "请指定您所在地的时区。"
 
 #. module: daily_newbiiz
-#: code:addons/daily_newbiiz/wizard/wizard.py:16
+#: code:addons/daily_newbiiz/wizard/wizard.py:26
 #, python-format
 msgid "Please submit your own report."
 msgstr "您无提交他人报告的权限。"
