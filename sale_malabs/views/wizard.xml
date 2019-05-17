@@ -1,16 +1,6 @@
 <odoo>
   <data>
 
-    <record model="ir.actions.act_window" id="action_reject_claim">
-      <field name="name">Claim Reject</field>
-      <field name="res_model">claim.process.wizard</field>
-      <field name="target">new</field>
-      <field name="src_model">crm.claim.ept</field>
-      <field name="view_mode">form</field>
-      <field name="special">cancel</field>
-      <field name="view_id" ref="view_claim_reject_ept"/>
-    </record>
-
     <record model="ir.ui.view" id="view_claim_reject_ept">
       <field name="name">Claim Reject EPT</field>
       <field name="model">claim.process.wizard</field>
@@ -31,14 +21,14 @@
       </field>
     </record>
 
-    <record model="ir.actions.act_window" id="action_claim_refund_process_ept">
-      <field name="name">Return Products</field>
+    <record model="ir.actions.act_window" id="action_reject_claim">
+      <field name="name">Claim Reject</field>
       <field name="res_model">claim.process.wizard</field>
       <field name="target">new</field>
-      <field name="src_model">claim.line.ept</field>
+      <field name="src_model">crm.claim.ept</field>
       <field name="view_mode">form</field>
       <field name="special">cancel</field>
-      <field name="view_id" ref="view_claim_picking"/>
+      <field name="view_id" ref="view_claim_reject_ept"/>
     </record>
 
     <record model="ir.ui.view" id="view_claim_picking">
@@ -65,5 +55,16 @@
         </form>
       </field>
     </record>
+
+    <record model="ir.actions.act_window" id="action_claim_refund_process_ept">
+      <field name="name">Return Products</field>
+      <field name="res_model">claim.process.wizard</field>
+      <field name="target">new</field>
+      <field name="src_model">claim.line.ept</field>
+      <field name="view_mode">form</field>
+      <field name="special">cancel</field>
+      <field name="view_id" ref="view_claim_picking"/>
+    </record>
+
   </data>
 </odoo>
