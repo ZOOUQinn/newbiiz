@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-19 08:02+0000\n"
-"PO-Revision-Date: 2019-04-19 08:02+0000\n"
+"POT-Creation-Date: 2019-05-17 20:03+0000\n"
+"PO-Revision-Date: 2019-05-17 20:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,9 +62,21 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:65
+#, python-format
+msgid "Can't Delete Submitted report"
+msgstr "报告已处于锁定状态。"
+
+module: daily_newbiiz
 #: model_terms:ir.ui.view,arch_db:daily_newbiiz.daily_report_form_wizard
 msgid "Cancel"
 msgstr "取消"
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:110
+#, python-format
+msgid "Cannot send email: user %s has no email address."
+msgstr ""
 
 #. module: daily_newbiiz
 #: model:ir.model.fields,field_description:daily_newbiiz.field_daily_report__content
@@ -89,9 +101,11 @@ msgid "Created on"
 msgstr ""
 
 #. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:56
 #: model:ir.actions.act_window,name:daily_newbiiz.action_project_daily_report
 #: model:ir.ui.menu,name:daily_newbiiz.menu_project_daily_report
 #: model:mail.message.subtype,name:daily_newbiiz.mt_daily_report
+#, python-format
 msgid "Daily Report"
 msgstr "每日工作报告"
 
@@ -142,6 +156,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:daily_newbiiz.field_daily_report__message_partner_ids
 msgid "Followers (Partners)"
 msgstr ""
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:45
+#, python-format
+msgid "Friday"
+msgstr "周五"
 
 #. module: daily_newbiiz
 #: model:ir.model.fields,field_description:daily_newbiiz.field_daily_report__id
@@ -208,6 +228,12 @@ msgid "Messages"
 msgstr ""
 
 #. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:41
+#, python-format
+msgid "Monday"
+msgstr "周一"
+
+#. module: daily_newbiiz
 #: model_terms:ir.ui.view,arch_db:daily_newbiiz.daily_report_search
 msgid "My Reports"
 msgstr ""
@@ -253,6 +279,12 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: daily_newbiiz
+#: code:addons/daily_newbiiz/wizard/wizard.py:23
+#, python-format
+msgid "Only ONE report for each day."
+msgstr "每日只可提交一份工作日报。"
+
+#. module: daily_newbiiz
 #: selection:daily.report,activity_state:0
 msgid "Overdue"
 msgstr ""
@@ -261,6 +293,18 @@ msgstr ""
 #: selection:daily.report,activity_state:0
 msgid "Planned"
 msgstr ""
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:60
+#, python-format
+msgid "Please set your timezone first."
+msgstr "请指定您所在地的时区。"
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/wizard/wizard.py:16
+#, python-format
+msgid "Please submit your own report."
+msgstr "您无提交他人报告的权限。"
 
 #. module: daily_newbiiz
 #: model:mail.template,subject:daily_newbiiz.email_template_daily_report
@@ -273,9 +317,21 @@ msgid "Report Wizard"
 msgstr ""
 
 #. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:34
+#, python-format
+msgid "Report on"
+msgstr ""
+
+#. module: daily_newbiiz
 #: model:ir.model.fields,field_description:daily_newbiiz.field_daily_report__activity_user_id
 msgid "Responsible User"
 msgstr ""
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:46
+#, python-format
+msgid "Saturday"
+msgstr "周六"
 
 #. module: daily_newbiiz
 #: model:mail.message.subtype,description:daily_newbiiz.mt_daily_report
@@ -313,9 +369,21 @@ msgid "Submitter"
 msgstr "提交人"
 
 #. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:47
+#, python-format
+msgid "Sunday"
+msgstr "周日"
+
+#. module: daily_newbiiz
 #: model:ir.ui.menu,name:daily_newbiiz.menu_project_task
 msgid "Tasks"
 msgstr "任务"
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:44
+#, python-format
+msgid "Thursday"
+msgstr "周四"
 
 #. module: daily_newbiiz
 #: model:ir.model.fields,field_description:daily_newbiiz.field_daily_report__title
@@ -326,6 +394,12 @@ msgstr ""
 #: selection:daily.report,activity_state:0
 msgid "Today"
 msgstr ""
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:42
+#, python-format
+msgid "Tuesday"
+msgstr "周二"
 
 #. module: daily_newbiiz
 #: model:ir.model.fields,field_description:daily_newbiiz.field_daily_report__message_unread
@@ -346,6 +420,12 @@ msgstr ""
 #: model:ir.model.fields,help:daily_newbiiz.field_daily_report__website_message_ids
 msgid "Website communication history"
 msgstr ""
+
+#. module: daily_newbiiz
+#: code:addons/daily_newbiiz/models/models.py:43
+#, python-format
+msgid "Wednesday"
+msgstr "周三"
 
 #. module: daily_newbiiz
 #: model:ir.model.fields,field_description:daily_newbiiz.field_daily_report__working_hours

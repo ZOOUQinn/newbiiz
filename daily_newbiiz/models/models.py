@@ -1,5 +1,7 @@
-import datetime
+from datetime import datetime, timezone, date, time, timedelta
 import logging
+
+import pytz
 
 from odoo import models, fields, api, _, exceptions
 
@@ -46,10 +48,17 @@ class DailyReport(models.Model):
         }
 
         for r in self:
-            if r.create_uid:
-                r.create_date_display = r.create_date.isoformat(' ')[:11] + _('Daily Report') + ' From ' + r.create_uid.name + ' ' + WEEK.get(r.create_date.weekday())
+            if self.env.user.tz or r.create_uid.tz:
+                tz = self.env.user.tz or r.create_uid.tz
+                local = pytz.timezone(tz)
+                create_date_local = datetime.fromtimestamp(r.create_date.timestamp(), tz=timezone(local._utcoffset))
+
+                if r.create_uid:
+                    r.create_date_display = create_date_local.isoformat(' ')[:11] + _('Daily Report') + ' From ' + r.create_uid.name + ' ' + WEEK.get(create_date_local.weekday())
+                else:
+                    r.create_date_display = 'Removed'
             else:
-                r.create_date_display = 'Removed'
+                raise exceptions.Warning(_('Please set your timezone first.'))
 
     @api.multi
     def unlink(self):
@@ -79,9 +88,9 @@ class DailyReport(models.Model):
     @api.multi
     def action_remind(self):
         """ Checking report status for each user, and send a remind email if the report for this day still didn't submitted """
-        start = datetime.datetime.combine(datetime.date.today(), datetime.time(hour=7, minute=30))
-        end = datetime.datetime.combine(datetime.date.today(), datetime.time(hour=7, minute=41))
-        now = datetime.datetime.now()
+        start = datetime.combine(date.today(), time(hour=7, minute=30))
+        end = datetime.combine(date.today(), time(hour=7, minute=41))
+        now = datetime.now()
         if start < now and end > now:
 
             today = fields.Datetime.to_datetime(fields.Date.today().isoformat())
@@ -95,7 +104,7 @@ class DailyReport(models.Model):
                     if len(self.search((
                         ('state', '=', 'submitted'),
                         ('create_date', '>=', today),
-                        ('create_date', '<', today + datetime.timedelta(days=1)),
+                        ('create_date', '<', today + timedelta(days=1)),
                         ('user_id', '=', user.id),
                     ))) == 0:
                         if not user.email:

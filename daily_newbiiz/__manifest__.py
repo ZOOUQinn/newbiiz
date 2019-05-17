@@ -1,6 +1,6 @@
 {
     'name': 'Daily Work Report',
-    'version': '1.1',
+    'version': '1.2',
     'depends': ['project'],
     'data': [
         'security/ir.model.access.csv',
