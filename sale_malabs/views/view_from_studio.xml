@@ -22,7 +22,6 @@
         </xpath>
         <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='function']" position="before">
           <field name="contact_name" string="Contact Name" />
-          <field name="job_position" string="Job Position" />
         </xpath>
         <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='email']" position="after">
           <field name="fax" string="Fax" />

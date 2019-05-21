@@ -13,7 +13,6 @@ class Res_Partner(models.Model):
     customer_id = fields.Char(string='Customer ID')
     vendor_number = fields.Char(string='Vendor Number')
     owner_name = fields.Char(string='Owner Name')
-    job_position = fields.Char(string='Job Position')
     fax = fields.Char(string='Fax')
     sales_note = fields.Char(string='Sales Note')
     rma_note = fields.Char(string='RMA Note')
