@@ -27,7 +27,6 @@
       <field name="target">new</field>
       <field name="src_model">crm.claim.ept</field>
       <field name="view_mode">form</field>
-      <field name="special">cancel</field>
       <field name="view_id" ref="view_claim_reject_ept"/>
     </record>
 
@@ -62,7 +61,6 @@
       <field name="target">new</field>
       <field name="src_model">claim.line.ept</field>
       <field name="view_mode">form</field>
-      <field name="special">cancel</field>
       <field name="view_id" ref="view_claim_picking"/>
     </record>
 
