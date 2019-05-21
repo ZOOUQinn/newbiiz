@@ -58,7 +58,7 @@ class DailyReport(models.Model):
                 else:
                     r.create_date_display = 'Removed'
             else:
-                raise exceptions.Warning(_('Please set your timezone first.'))
+                raise exceptions.Warning(_('Please set your timezone in your Preference first.'))
 
     @api.multi
     def unlink(self):

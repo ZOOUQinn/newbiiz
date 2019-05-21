@@ -297,8 +297,8 @@ msgstr ""
 #. module: daily_newbiiz
 #: code:addons/daily_newbiiz/models/models.py:61
 #, python-format
-msgid "Please set your timezone first."
-msgstr "请指定您所在地的时区。"
+msgid "Please set your timezone in your Preference first."
+msgstr "请在个人选项中指定您所在地的时区。"
 
 #. module: daily_newbiiz
 #: code:addons/daily_newbiiz/wizard/wizard.py:26
