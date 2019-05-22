@@ -59,7 +59,7 @@ class CrmClaimEpt(models.Model):
         ('prevention', 'Preventive Action')
     ], string='Action Type')
     user_fault = fields.Char(string='Trouble Responsible')
-    user_id = fields.Many2one(comodel_name='res.users', string='Responsible')
+    user_id = fields.Many2one(comodel_name='res.users', string='Responsible', default=lambda self: self.env.user)
     website_message_ids = fields.One2many(comodel_name='mail.message', inverse_name='res_id')
 
     @api.onchange('picking_id')
@@ -88,6 +88,9 @@ class CrmClaimEpt(models.Model):
         vals.update({'code': self.env['ir.sequence'].next_by_code('crm.claim.ept')})
         record = super(CrmClaimEpt, self).create(vals)
         record.sale_id = record.picking_id.sale_id
+        record.picking_id.view_claim_button = True
+        record.picking_id.claim_count_out = self.search_count((('picking_id', '=', record.picking_id.id),))
+        record.sale_id.rma_count = self.search_count((('sale_id', '=', record.sale_id.id),))
         return record
 
     @api.multi
@@ -305,7 +308,7 @@ class ClaimRejectMessage(models.Model):
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    view_claim_button = fields.Boolean(string='View Claim Button', readonly=True)
+    view_claim_button = fields.Boolean(string='View Claim Button', readonly=True, default=False)
     claim_count_out = fields.Integer(string='Claims', readonly=True)
 
     @api.multi
@@ -345,6 +348,19 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     rma_count = fields.Integer(string='RMA', readonly=True)
+
+    @api.multi
+    def action_view_rma(self):
+        action = self.env.ref('sale_malabs.crm_claim_ept_action').read()[0]
+
+        claims = self.env['crm.claim.ept'].search((('sale_id', '=', self.id),))
+
+        if len(claims) > 1:
+            action['domain'] = [('id', 'in', claims.ids)]
+        elif claims:
+            action['views'] = [(self.env.ref('sale_malabs.crm_claims_ept_form_view').id, 'form')]
+            action['res_id'] = claims.id
+        return action
 
 
 class StockWarehouse(models.Model):
