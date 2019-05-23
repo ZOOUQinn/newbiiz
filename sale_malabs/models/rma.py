@@ -207,10 +207,6 @@ class CrmClaimEpt(models.Model):
             claim.state = 'close'
 
     @api.multi
-    def action_claim_reject_process_ept(self):
-        pass
-
-    @api.multi
     def show_return_picking(self):
         action = self.env.ref('stock.action_picking_tree_all').read()[0]
 

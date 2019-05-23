@@ -28,6 +28,12 @@ class ClaimProcessWizard(models.TransientModel):
             defaults['quantity'] = claim_line.return_qty
             defaults['hide'] = True
             defaults['claim_line_id'] = claim_line.id
+        elif self.env.context['active_model'] == 'crm.claim.ept':
+            claim = self.env[self.env.context['active_model']].browse(self.env.context['active_id'])
+            if claim.state == 'draft':
+                defaults.update({'is_visible_goods_back': False})
+            elif claim.state == 'process':
+                defaults.update({'is_visible_goods_back': True})
         return defaults
 
     @api.multi
@@ -39,8 +45,17 @@ class ClaimProcessWizard(models.TransientModel):
 
     @api.multi
     def reject_claim(self):
-        self.ensure_one()
         record = self.env[self.env.context['active_model']].browse(self.env.context.get('active_id'))
+        if record.state == 'process':
+            if self.is_visible_goods_back:
+                record.to_return_picking_ids = ((4, record.return_picking_id.copy(default={
+                    'location_id': record.return_picking_id.location_dest_id.id,
+                    'location_dest_id': record.return_picking_id.location_id.id,
+                    'origin': 'Return of ' + record.return_picking_id.name,
+                    'picking_type_id': self.env.ref('stock.picking_type_out').id
+                }).id, False),)
+            else:
+                pass
         record.state = 'reject'
         record.reject_message_id = self.reject_message_id
 

@@ -49,13 +49,10 @@
       <form string="Claim">
         <header>
           <button type="object" name="approve_claim" states="draft" string="Approve" class="oe_highlight"/>
-          <button type="action" name="sale_malabs.action_reject_claim" states="draft" string="Reject" class="oe_highlight"/>
+          <button type="object" name="process_claim" states="process" string="Validate" class="oe_highlight"/>
+          <button type="action" name="sale_malabs.action_reject_claim" states="draft,process" string="Reject" class="oe_highlight"/>
           <button type="object" name="set_to_draft" attrs="{'invisible':[('state','not in',['approve','reject'])]}"
                   string="Set to Draft" class="oe_highlight"/>
-          <button type="object" name="process_claim" string="Validate" class="oe_highlight"
-                  attrs="{'invisible':[('state','!=','process')]}"/>
-          <button type="object" name="action_claim_reject_process_ept" string="Reject" class="oe_highlight"
-                  attrs="{'invisible':[('state','!=','process')]}"/>
           <field name="state" widget="statusbar" statusbar_visible="draft,approve,process,close"/>
         </header>
         <sheet string="Claims">
