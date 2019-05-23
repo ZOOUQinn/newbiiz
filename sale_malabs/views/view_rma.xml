@@ -48,10 +48,6 @@
     <field name="arch" type="xml">
       <form string="Claim">
         <header>
-          <button type="object" name="action_rma_send" string="Send RMA By Mail"
-                  attrs="{'invisible':[('rma_send','=',True)]}" class="oe_highlight"/>
-          <button type="object" name="action_rma_send" string="Send RMA By Mail"
-                  attrs="{'invisible':[('rma_send','=',False)]}"/>
           <button type="object" name="approve_claim" states="draft" string="Approve" class="oe_highlight"/>
           <button type="action" name="sale_malabs.action_reject_claim" states="draft" string="Reject" class="oe_highlight"/>
           <button type="object" name="set_to_draft" attrs="{'invisible':[('state','not in',['approve','reject'])]}"
@@ -85,7 +81,6 @@
             <field name="new_sale_id" invisible="1"/>
             <field name="refund_invoice_ids" invisible="1"/>
             <field name="to_return_picking_ids" invisible="1"/>
-            <field name="rma_send" invisible="1"/>
             <field name="code" class="oe_inline" readonly="1"/>
           </h1>
           <group colspan="4" col="4" groups="base.group_user">

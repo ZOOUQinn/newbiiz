@@ -43,7 +43,6 @@ class CrmClaimEpt(models.Model):
     reject_message_id = fields.Many2one(comodel_name='claim.reject.message', string='Reject Reason')
     resolution = fields.Text(string='Resolution')
     return_picking_id = fields.Many2one(comodel_name='stock.picking', string='Return Delivery Order')
-    rma_send = fields.Boolean()
     sale_id = fields.Many2one(comodel_name='sale.order', string='Sale Order', readonly=True)
     section_id = fields.Many2one(comodel_name='crm.team', string='Sales Channel', index=True)
     state = fields.Selection(selection=[
@@ -94,10 +93,6 @@ class CrmClaimEpt(models.Model):
         return record
 
     @api.multi
-    def action_rma_send(self):
-        pass
-
-    @api.multi
     def approve_claim(self):
         self.ensure_one()
         picking = self.env['stock.picking'].create({
@@ -124,7 +119,10 @@ class CrmClaimEpt(models.Model):
 
     @api.multi
     def set_to_draft(self):
-        pass
+        self.ensure_one()
+        self.return_picking_id.state = 'cancel'
+        self.return_picking_id = None
+        self.state = 'draft'
 
     @api.multi
     def process_claim(self):
