@@ -14,7 +14,6 @@
         'data/rma.xml',
         'views/view.xml',
         'views/view_rma.xml',
-        'views/view_from_studio.xml',
         'views/report_invoice.xml',
         'views/report_rma.xml',
         'views/wizard.xml',
