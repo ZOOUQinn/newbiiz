@@ -1,0 +1,70 @@
+<odoo>
+
+  <record model="ir.ui.view" id="daily_report_tree">
+    <field name="name">daily.report.tree</field>
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <tree decoration-info="state=='submitted'">
+        <field name="create_uid"/>
+        <field name="create_date_display"/>
+        <field name="keywords"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="daily_report_form">
+    <field name="name">daily.report.form</field>
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button string="Submit" name="daily_newbiiz.action_window_daily_report_wizard" type="action" states="draft"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="keywords" placeholder="Don't suppose to input date." attrs="{'readonly':[('state','in',['submitted'])]}"/>
+            </group>
+            <group>
+              <field name="working_hours" attrs="{'readonly':[('state','in',['submitted'])]}"/>
+            </group>
+            <field name="content" attrs="{'readonly':[('state','in',['submitted'])]}"/>
+          </group>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers"/>
+          <field name="activity_ids" widget="mail_activity"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record id="daily_report_search" model="ir.ui.view">
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <search>
+        <filter name="my_reports" string="My Reports" domain="[('user_id','=',uid)]"/>
+        <filter name="submitted" string="Submitted" domain="[('state','=','submitted')]"/>
+      </search>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="action_project_daily_report">
+    <field name="name">Daily Report</field>
+    <field name="res_model">daily.report</field>
+    <field name="context">{'search_default_my_reports': 1}</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem name="Tasks" id="menu_project_task" parent="project.menu_main_pm"
+            sequence="2" groups="base.group_no_one,project.group_project_user"/>
+
+  <menuitem name="All Tasks" id="project.menu_project_management" parent="menu_project_task"
+            action="project.action_view_task" sequence="2" groups="base.group_no_one,project.group_project_user"/>
+
+  <menuitem id="menu_project_daily_report" name="Daily Report" groups="project.group_project_user"
+            action="action_project_daily_report" parent="menu_project_task" sequence="15"/>
+</odoo>
