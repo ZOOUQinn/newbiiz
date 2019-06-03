@@ -32,7 +32,8 @@ class CrmClaimEpt(models.Model):
     partner_phone = fields.Char(string='Phone')
     picking_id = fields.Many2one(comodel_name='stock.picking', string='Delivery Order',  domain=[
         ('location_dest_id.usage', '=', 'customer'),
-        ('state', '=', 'done')
+        ('state', '=', 'done'),
+        ('sale_id', '!=', None),
     ])
     priority = fields.Selection(selection=[
         ('0', 'Low'),
@@ -72,7 +73,7 @@ class CrmClaimEpt(models.Model):
             self.section_id = picking.sale_id.team_id
 
             claim_line_ids = [(5, 0, 0)]
-            for move in picking.move_ids_without_package:
+            for move in picking.move_lines:
                 claim_line_ids.append((0, 0, {
                     'product_id': move.product_id.id,
                     'done_qty': move.quantity_done,
@@ -311,7 +312,32 @@ class StockPicking(models.Model):
         crm_claim_ept = self.env['crm.claim.ept'].search((('return_picking_id', '=', self.id),))
         if crm_claim_ept:
 
+            original_out_picking = crm_claim_ept.picking_id
+            max_quantity = {}
+            for original_out_move in original_out_picking.move_lines:
+                max_quantity.update({
+                    original_out_move.product_id: original_out_move.quantity_done + max_quantity.get(original_out_move.product_id, 0),
+                })
+
+            for crm_claim in self.env['crm.claim.ept'].search((('picking_id', '=', original_out_picking.id),)):
+                for claim_line in crm_claim.claim_line_ids:
+                    if claim_line.move_id.state == 'done':
+                        max_quantity.update({
+                            claim_line.product_id: max_quantity.get(claim_line.product_id, 0) - claim_line.move_id.quantity_done,
+                        })
+
             for claim_line in crm_claim_ept.claim_line_ids:
+                if claim_line.move_id.quantity_done > 0:
+                    result = claim_line.move_id.quantity_done > max_quantity.get(claim_line.product_id, 0)
+                else:
+                    result = claim_line.move_id.product_uom_qty > max_quantity.get(claim_line.product_id, 0)
+
+                if result:
+                    raise exceptions.Warning(
+                        _('RMA quantity of Claim line with %s has Exceed.')
+                        % claim_line.product_id.name
+                    )
+
                 claim_line.claim_type = claim_line.rma_reason_id.action
 
             crm_claim_ept.state = 'process'
@@ -326,8 +352,8 @@ class StockMove(models.Model):
 
         if vals.get('state') == 'done':
             for move in self:
-                for claim_lime in self.env['claim.line.ept'].search((('move_id', '=', move.id),)):
-                    claim_lime.return_qty = move.quantity_done
+                for claim_line in self.env['claim.line.ept'].search((('move_id', '=', move.id),)):
+                    claim_line.return_qty = move.quantity_done
 
         return record
 
