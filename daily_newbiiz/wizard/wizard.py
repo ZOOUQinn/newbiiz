@@ -9,7 +9,6 @@ class Diary_Wizard(models.TransientModel):
     _name = 'daily.report_wizard'
     _description = 'Report Wizard'
 
-    @api.multi
     def submit(self):
         report = self.env['daily.report'].browse(self._context.get('active_id'))
 

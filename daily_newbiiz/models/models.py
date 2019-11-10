@@ -60,14 +60,12 @@ class DailyReport(models.Model):
             else:
                 raise exceptions.Warning(_('Please set your timezone in your Preference first.'))
 
-    @api.multi
     def unlink(self):
         if self.state == 'submitted':
             raise exceptions.Warning(_('Can\'t Delete Submitted report'))
         else:
             return super(DailyReport, self).unlink()
 
-    @api.multi
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'state' in init_values and self.state == 'submitted':
@@ -85,7 +83,6 @@ class DailyReport(models.Model):
         result.message_subscribe(partner_ids=partner_ids)
         return result
 
-    @api.multi
     def action_remind(self):
         """ Checking report status for each user, and send a remind email if the report for this day still didn't submitted """
         start = datetime.combine(date.today(), time(hour=7, minute=30))
