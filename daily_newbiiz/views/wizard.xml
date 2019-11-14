@@ -5,9 +5,7 @@
       <field name="name">Daily Report Wizard</field>
       <field name="res_model">daily.report_wizard</field>
       <field name="target">new</field>
-      <field name="src_model">daily.report</field>
       <field name="view_mode">form</field>
-      <field name="special">cancel</field>
     </record>
 
     <record model="ir.ui.view" id="daily_report_form_wizard">

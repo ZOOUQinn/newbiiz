@@ -31,6 +31,7 @@ class Diary_Wizard(models.TransientModel):
         )):
             raise exceptions.Warning(_('Only ONE report for each day.'))
         else:
-            self.env['daily.report'].browse(self._context.get('active_id')).state = 'submitted'
+            sth = self.env['daily.report'].browse(self._context.get('active_id'))
+            sth.state = 'submitted'
 
         return True
